@@ -19,6 +19,7 @@ public class PlatformGenerator : MonoBehaviour
     private float MinX = -3.15f;
     private float MinY = -4.25f;
     private float interval = 0.7f;
+    private int stackPosY = 0;
 
     public void Initialize()
     {
@@ -77,7 +78,8 @@ public class PlatformGenerator : MonoBehaviour
                 // ÇÃ·§Æû À§Ä¡ ÁöÁ¤
                 if(makeCount != 0)
                 {
-                    createdPlatform.transform.position = new Vector2(interval * i + MinX, interval * 3.8f * makeCount + MinY);
+                    
+                    createdPlatform.transform.position = new Vector2(interval * i + MinX, interval * 3.8f * stackPosY + MinY);
                 }
                 else
                 {
@@ -108,5 +110,7 @@ public class PlatformGenerator : MonoBehaviour
                 }
             }
         }
+
+        stackPosY++;
     }
 }
