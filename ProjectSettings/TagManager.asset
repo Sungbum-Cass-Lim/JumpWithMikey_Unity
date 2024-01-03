@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - WorldBorder
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Player
+  - Object
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Cloud
+    uniqueID: 1509323177
+    locked: 0
+  - name: Platform
+    uniqueID: 2630057787
+    locked: 0
+  - name: Vending
+    uniqueID: 2561939347
+    locked: 0
+  - name: Can
+    uniqueID: 1736545611
+    locked: 0
+  - name: Obj
+    uniqueID: 117771779
+    locked: 0
+  - name: Player
+    uniqueID: 828546371
+    locked: 0
+  - name: BG
+    uniqueID: 3464910611
+    locked: 0
+  - name: BackDimd
+    uniqueID: 821238173
+    locked: 0
