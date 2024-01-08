@@ -569,7 +569,7 @@ Transform:
   m_GameObject: {fileID: 841218728555376685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7482034619225104493}
@@ -723,6 +723,7 @@ MonoBehaviour:
   pla: {fileID: 84630552524230442}
   item: {fileID: 89806330916141421}
   fire: {fileID: 311023770968921372}
+  platformLevel: 0
 --- !u!1 &1242373886069407728
 GameObject:
   m_ObjectHideFlags: 0
