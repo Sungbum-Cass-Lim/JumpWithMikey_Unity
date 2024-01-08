@@ -13,7 +13,7 @@ public class ClimbResDto : BaseResDto
 {
     public string pid;
     public bool isPaidPlatform;
-    public int[][] platform;
+    public int[][] platforms;
     public int[] enemyMap;
     public int height;
 }

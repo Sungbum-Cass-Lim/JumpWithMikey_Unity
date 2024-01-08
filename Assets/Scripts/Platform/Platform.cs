@@ -21,7 +21,13 @@ public class Platform : MonoBehaviour
     public GameObject fire;
 
     private PlatformGenerator parentPlatform;
-    private int platformIdx;
+    public int platformLevel;
+
+    private void LateUpdate()
+    {
+        if (GameMgr.Instance.Player.curFloor - 2 > platformLevel)
+            ObjectPoolMgr.Instance.ReleasePool(gameObject);
+    }
 
     public void Initialize(PlatformGenerator parentPlatform, ObjectType objectType)
     {

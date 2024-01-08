@@ -15,7 +15,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
     private Action connetCallBack;
 
-    protected override void InitializeSingleton() 
+    protected override void InitializeSingleton()
     {
 #if !UNITY_EDITOR && UNITY_WEBGL
 #if USE_WEBGL_LOCAL_CASS
@@ -40,7 +40,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         options.ConnectWith = TransportTypes.WebSocket;
         options.AutoConnect = false;
 
-        options.Auth = (serverManager, serverSocket) => new { token = UserManager.Instance.userInfo.token, uid = UserManager.Instance.userInfo.uid, appVersion = Application.version, appName = Application.productName};
+        options.Auth = (serverManager, serverSocket) => new { token = UserManager.Instance.userInfo.token, uid = UserManager.Instance.userInfo.uid, appVersion = Application.version, appName = Application.productName };
 
         serverManager = new SocketManager(new Uri(address), options);
         serverSocket = serverManager.GetSocket("/");
@@ -71,17 +71,17 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             Debug.Log($"Error msg: {resp.message}");
         });
 
-        serverManager.Socket.On<GameGetItemResDto>("collectItem", (payLoad) =>
+        serverManager.Socket.On<GameGetItemResDto>("collectItem", (res) =>
         {
 
         });
 
-        serverManager.Socket.On<GameExpiredResDto>("expiredDuration", (payLoad) =>
+        serverManager.Socket.On<GameExpiredResDto>("expiredDuration", (res) =>
         {
 
         });
 
-        serverManager.Socket.On<GameDeadResDto>("dead", (payLoad) =>
+        serverManager.Socket.On<GameDeadResDto>("dead", (res) =>
         {
 
         });
@@ -91,6 +91,23 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         });
     }
+
+    #region On Game Data
+    private void OnCollectItem(string res)
+    {
+
+    }
+
+    private void OnExpiredDuration(string res)
+    {
+
+    }
+
+    private void OnDead(string res)
+    {
+
+    }
+    #endregion
 
     #region Start Communication
     public void RequestStartGame(GameStartReqDto data)
@@ -106,20 +123,23 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     }
     #endregion
 
-    #region Game Data
-    private void OnCollectItem(string payLoad)
+    #region Climb Communication
+    public void RequestClimb(ClimbReqDto data)
     {
-
+        Send<string>("climb", data, ResponseClimb);
     }
-
-    private void OnExpiredDuration(string payLoad)
+    public void ResponseClimb(string res)
     {
+        //Debug.Log($"[Recv : Climb] => {res}");
+        ClimbResDto climbResDto = JsonConvert.DeserializeObject<ClimbResDto>(res);
 
-    }
+        if (climbResDto.platforms != null)
+        {
+            foreach (var arr in climbResDto.platforms)
+                GameMgr.Instance.platforms.Enqueue(arr);
 
-    private void OnDead(string payLoad)
-    {
-
+            GameMgr.Instance.GameLogic.platformGererate();
+        }
     }
     #endregion
 
@@ -148,7 +168,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             serverManager = null;
         }
     }
-#endregion
+    #endregion
 
     private void Send(string message, BaseReqDto data)
     {
@@ -162,7 +182,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         var jsonData = JsonConvert.SerializeObject(data);
 
-        Debug.Log($"[Send : {message}] => " + jsonData);
+        //Debug.Log($"[Send : {message}] => " + jsonData);
         serverSocket.Emit(message, jsonData);
     }
     private void Send<T>(string message, BaseReqDto data, Action<T> callBack)
@@ -177,7 +197,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         var jsonData = JsonConvert.SerializeObject(data);
 
-        Debug.Log($"[Send : {message}] => " + jsonData);
+        //Debug.Log($"[Send : {message}] => " + jsonData);
         serverSocket.EmitCallBack(callBack, message, jsonData);
     }
 }

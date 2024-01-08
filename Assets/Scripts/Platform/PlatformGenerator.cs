@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlatformGenerator : MonoBehaviour
 {
     public GameLogic gameLogic;
+    private int platformLevel = 0;
 
     private int platformCount = 10;
     private int enemyCount = 0;
@@ -25,9 +26,11 @@ public class PlatformGenerator : MonoBehaviour
     {
         Debug.Log("StartGenarate");
 
-        for(int i = 0; i < platformCount; i++)
+        int Count = GameMgr.Instance.platforms.Count;
+        for (int i = 0; i < Count; i++)
         {
-            MakePlatform(i);
+            MakePlatform(platformLevel);
+            platformLevel++;
         }
     }
 
@@ -74,10 +77,12 @@ public class PlatformGenerator : MonoBehaviour
                         break;
                 }
 
+                //ÇÃ·§Æû Ãþ ÀÔ·Â
+                createdPlatform.platformLevel = this.platformLevel;
+
                 // ÇÃ·§Æû À§Ä¡ ÁöÁ¤
-                if(makeCount != 0)
+                if (makeCount != 0)
                 {
-                    
                     createdPlatform.transform.position = new Vector2(interval * i + MinX, interval * 3.8f * stackPosY + MinY);
                 }
                 else

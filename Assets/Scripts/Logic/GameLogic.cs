@@ -23,8 +23,9 @@ public class GameLogic : MonoBehaviour
 
     private void Update()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, cameraY, -10), cameraSpeed * Time.deltaTime);
+        scoreText.text = $"{GameMgr.Instance.GameScore}";
 
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, cameraY, -10), cameraSpeed * Time.deltaTime);
         if (player != null && player.transform.position.y > Camera.main.ScreenToWorldPoint(Vector3.up * Screen.height / 2).y)
         {
             cameraY = player.transform.position.y + 0.3f;
@@ -39,6 +40,11 @@ public class GameLogic : MonoBehaviour
         titleUi.SetActive(false);
         gameUi.SetActive(true);
 
+        platformGererate();
+    }
+
+    public void platformGererate()
+    {
         platformGenerator.Initialize();
     }
 

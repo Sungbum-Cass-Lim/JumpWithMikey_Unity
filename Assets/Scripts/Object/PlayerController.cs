@@ -24,8 +24,10 @@ public class PlayerController : MonoBehaviour
     public float rotationForce = 0;
     public float curRotation = 0;
     private int jumpCount = 0;
-
     private float gravity = 1.2f;
+
+    [Header("Floor")]
+    public int curFloor = 0;
 
     private void Start()
     {
@@ -114,16 +116,6 @@ public class PlayerController : MonoBehaviour
         moveX += playerVelocityX * Time.deltaTime * 0.75f;
     }
 
-    private void TypeChange()
-    {
-
-    }
-
-    private void TypeReset()
-    {
-
-    }
-
     private void OnCollisionEnter2D(Collision2D other)
     {
 
@@ -139,6 +131,22 @@ public class PlayerController : MonoBehaviour
 
                 playerVelocityY = 0;
                 jumpCount = 0;
+
+                if(curFloor < platform.platformLevel)
+                {
+                    GameMgr.Instance.GameScore += (platform.platformLevel - curFloor) * 10;
+
+                    ClimbReqDto climbReqDto = new();
+
+                    climbReqDto.floorsUp = platform.platformLevel - curFloor;
+                    climbReqDto.floor = platform.platformLevel;
+                    climbReqDto.score = GameMgr.Instance.GameScore;
+
+                    curFloor = platform.platformLevel;
+                    NetworkMgr.Instance.RequestClimb(climbReqDto);
+
+                    //TODO: Log ³²±â±â
+                }
             }
         }
     }
