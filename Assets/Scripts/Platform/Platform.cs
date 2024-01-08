@@ -12,6 +12,8 @@ public enum ObjectType
 
 public class Platform : MonoBehaviour
 {
+    public BoxCollider2D boxCollider2D;
+
     public GameObject vending;
     public GameObject can;
     public GameObject pla;
@@ -20,17 +22,6 @@ public class Platform : MonoBehaviour
 
     private PlatformGenerator parentPlatform;
     private int platformIdx;
-
-    public void Start()
-    {
-
-    }
-
-    public void Update()
-    {
-
-    }
-
 
     public void Initialize(PlatformGenerator parentPlatform, ObjectType objectType)
     {
@@ -61,4 +52,8 @@ public class Platform : MonoBehaviour
         this.parentPlatform = parentPlatform;
     }
 
+    public float Top()
+    {
+        return boxCollider2D.bounds.max.y + 0.39f;
+    }
 }

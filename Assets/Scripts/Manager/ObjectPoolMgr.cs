@@ -59,7 +59,7 @@ public class ObjectPoolMgr : SingletonComponentBase<ObjectPoolMgr>
         IncreasePoolObjectCache(50, PoolObjectType.Platform, "Platform2");
         IncreasePoolObjectCache(50, PoolObjectType.Platform, "Platform3");
         IncreasePoolObjectCache(50, PoolObjectType.Platform, "Platform4");
-        //IncreasePoolObjectCache(1, PoolObjectType.Player, "Player");
+        IncreasePoolObjectCache(1, PoolObjectType.Player, "Player");
         //IncreasePoolObjectCache(10, PoolObjectType.Effect, "SoundComponent");
     }
 

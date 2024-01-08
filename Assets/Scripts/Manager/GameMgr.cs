@@ -15,7 +15,7 @@ public class GameMgr : SingletonComponentBase<GameMgr>
 
     [Header("Current Game Info")]
     public GameState gameState = GameState.Title;
-    public PlayerController Player = null;
+    public PlayerController Player { private set; get; }
     public int GameScore = 0;
 
     [Header("Importent Game Component")]
@@ -37,6 +37,7 @@ public class GameMgr : SingletonComponentBase<GameMgr>
         GameLogic = FindObjectOfType<GameLogic>();
     }
 
+    //GameStartData Init
     public void Initialize(int height, int[][]platforms, int[]enemyMap, bool result, int renderCondition)
     {
         this.height = height;
@@ -49,13 +50,15 @@ public class GameMgr : SingletonComponentBase<GameMgr>
         this.renderCondition = renderCondition;
         this.isReceiveStart = true;
 
-        GameLogic.GameStart();
+        GameStart();
     }
 
-    public void GameStart(PlayerController CurPlayer)
+    public void GameStart()
     {
         gameState = GameState.Game;
-        Player = CurPlayer;
+        Player = ObjectPoolMgr.Instance.Load<PlayerController>(PoolObjectType.Player, "Player");
+
+        GameLogic.Initialize(Player);
     }
 
     public void GameOver()

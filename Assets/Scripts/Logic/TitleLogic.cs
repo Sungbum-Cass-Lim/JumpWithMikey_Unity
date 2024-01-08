@@ -83,7 +83,8 @@ public class TitleLogic : MonoBehaviour
         }
     }
 
-    public void OnStartButton()
+    //Web Token Request
+    public void InitWebToken()
     {
         touchBlock.SetActive(true);
 
@@ -93,16 +94,18 @@ public class TitleLogic : MonoBehaviour
         WebNetworkMgr.Instance.InitNetwork(OnToken);
     }
 
-    public void OnToken(bool result)
+    //Web Token Response
+    private void OnToken(bool result)
     {
         if (result)
-            NetworkMgr.Instance.OnConnect(GetGameData);
+            NetworkMgr.Instance.OnConnect(GetStartData);
 
         else
             Debug.LogError("Token Is Null");
     }
 
-    private void GetGameData()
+    //Game Start Request
+    private void GetStartData()
     {
         GameStartReqDto gameStartReqDto = new();
         NetworkMgr.Instance.RequestStartGame(gameStartReqDto);

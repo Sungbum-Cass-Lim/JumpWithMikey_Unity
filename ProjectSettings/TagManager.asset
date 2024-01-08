@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - WorldBorder
+  - Platform
   layers:
   - Default
   - TransparentFX

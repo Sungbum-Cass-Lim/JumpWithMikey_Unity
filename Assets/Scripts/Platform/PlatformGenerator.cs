@@ -38,7 +38,6 @@ public class PlatformGenerator : MonoBehaviour
         if (GameMgr.Instance.platforms.TryDequeue(out var firstIdx))
         {
             currentPlatform = firstIdx;
-            Debug.Log(currentPlatform);
         }
 
         for (int i = 0; i < currentPlatform.Length; i++)
