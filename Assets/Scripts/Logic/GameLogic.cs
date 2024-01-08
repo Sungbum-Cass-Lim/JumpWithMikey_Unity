@@ -14,7 +14,7 @@ public class GameLogic : MonoBehaviour
     public GameObject tutorial;
     public Text scoreText;
 
-    private float cameraSpeed = 20;
+    private float cameraSpeed = 14;
     private float cameraY = 0;
 
     [Header("Logic Part")]

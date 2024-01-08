@@ -8,7 +8,8 @@ public class Cloud : MonoBehaviour
 
     public void Initilize()
     {
-        transform.position = new Vector2(Random.Range(4.5f, 6f), Random.Range(3f, 4.5f));
+        transform.SetParent(Camera.main.transform);
+        transform.localPosition = new Vector3(Random.Range(4.5f, 6f), Random.Range(3f, 4.5f), 10);
         moveSpeed = Random.Range(1f, 2f);
     }
 

@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpCount < CharacterMgr.Instance.jump)
         {
-            playerVelocityY = CharacterMgr.Instance.velocityY * 0.7f;
+            playerVelocityY = CharacterMgr.Instance.velocityY * 0.75f;
 
             transform.eulerAngles = Vector3.zero;
             curRotation = -rotationForce * Time.deltaTime;
