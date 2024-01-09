@@ -8,6 +8,7 @@ public enum PoolObjectType
 
     Cloud = 0,
     Platform,
+    Object,
     Player,
     Effect,
 
@@ -55,10 +56,11 @@ public class ObjectPoolMgr : SingletonComponentBase<ObjectPoolMgr>
     {
         IncreasePoolObjectCache(5, PoolObjectType.Cloud, "Cloud1");
         IncreasePoolObjectCache(5, PoolObjectType.Cloud, "Cloud2");
-        IncreasePoolObjectCache(25, PoolObjectType.Platform, "Platform1");
-        IncreasePoolObjectCache(100, PoolObjectType.Platform, "Platform2");
-        IncreasePoolObjectCache(25, PoolObjectType.Platform, "Platform3");
-        IncreasePoolObjectCache(25, PoolObjectType.Platform, "Platform4");
+        IncreasePoolObjectCache(10, PoolObjectType.Platform, "Platform1");
+        IncreasePoolObjectCache(150, PoolObjectType.Platform, "Platform2");
+        IncreasePoolObjectCache(10, PoolObjectType.Platform, "Platform3");
+        IncreasePoolObjectCache(10, PoolObjectType.Platform, "Platform4");
+        IncreasePoolObjectCache(10, PoolObjectType.Object, "Enemy");
         IncreasePoolObjectCache(1, PoolObjectType.Player, "Player");
         //IncreasePoolObjectCache(10, PoolObjectType.Effect, "SoundComponent");
     }

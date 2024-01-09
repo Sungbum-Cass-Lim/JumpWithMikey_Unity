@@ -11,7 +11,7 @@ public class GameGetItemResDto : BaseResDto
 {
     public int score;
     public CharacterEffect effect;
-    public int duration;
+    public float duration;
 }
 
 public class GameExpiredResDto : BaseResDto { }

@@ -11,7 +11,7 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
     public bool isTank { private set; get; }
     public int plaMagnet { private set; get; }
 
-    public int changeTime { private set; get; }
+    public float changeTime { set; get; }
 
     public bool isChange { private set; get; }
 
@@ -29,7 +29,7 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
         GameMgr.Instance.Player.CharacterAnimChange(0);
     }
 
-    public void SetCharacter(GameGetItemResDto gameGetItemResDto, int duration)
+    public void SetCharacter(GameGetItemResDto gameGetItemResDto, float duration)
     {
         name = gameGetItemResDto.effect.name;
         velocityX = gameGetItemResDto.effect.velocityX;

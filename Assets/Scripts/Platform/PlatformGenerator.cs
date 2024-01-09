@@ -89,10 +89,12 @@ public class PlatformGenerator : MonoBehaviour
                     createdPlatform.transform.position = new Vector2(intervalX * i + MinX, MinY);   
                 }
 
-                //TODO: 利 积己
+                //利 积己
                 if(enemyIdx == 32)
                 {
+                    var enemy = ObjectPoolMgr.Instance.Load<Enemy>(PoolObjectType.Object, "Enemy");
 
+                    enemy.transform.position = new Vector2(createdPlatform.transform.position.x, createdPlatform.transform.position.y + 0.6f);
                 }
 
                 // 敲阀汽 Init

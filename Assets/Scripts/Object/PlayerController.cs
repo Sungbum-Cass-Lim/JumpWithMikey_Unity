@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject playerCharacter;
     public GameObject ChangeEffect;
+    public Text ChangeTimeText;
     private Coroutine ChangeEffectCorutine;
 
     [Header("Componenet")]
@@ -73,6 +75,12 @@ public class PlayerController : MonoBehaviour
             playerAnimator.SetBool("MoveStart", true);
             GameMgr.Instance.GameLogic.TutorialOff();
         }
+
+        if(CharacterMgr.Instance.changeTime > 0)
+        {
+            CharacterMgr.Instance.changeTime -= Time.deltaTime;
+            ChangeTimeText.text = Mathf.Ceil(CharacterMgr.Instance.changeTime).ToString();
+        }
     }
 
     private void FixedUpdate()
@@ -110,6 +118,13 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine(ChangeEffectCorutine);
 
             ChangeEffectCorutine = StartCoroutine(ChangeEffectActive());
+
+            ChangeTimeText.gameObject.SetActive(true);
+            ChangeTimeText.text = CharacterMgr.Instance.changeTime.ToString();
+        }
+        else
+        {
+            ChangeTimeText.gameObject.SetActive(false);
         }
 
         playerAnimator.runtimeAnimatorController = playerCharacterList[type];
