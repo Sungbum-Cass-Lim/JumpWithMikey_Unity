@@ -61,9 +61,12 @@ TagManager:
   - name: Player
     uniqueID: 828546371
     locked: 0
-  - name: BG
+  - name: Effect
     uniqueID: 3464910611
     locked: 0
-  - name: BackDimd
+  - name: BG
     uniqueID: 821238173
+    locked: 0
+  - name: BackDimd
+    uniqueID: 4126505389
     locked: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Item : PlatformObj
 {
-    protected override void PlayerTouch()
+    protected override void PlayerTouch(PlayerController player)
     {
         //TODO: Log
 

@@ -7,19 +7,22 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Componenet")]
     public GameObject playerCharacter;
+    public GameObject ChangeEffect;
+    private Coroutine ChangeEffectCorutine;
+
+    [Header("Componenet")]
     public SpriteRenderer playerSpriter;
     public Animator playerAnimator;
     public List<AnimatorOverrideController> playerCharacterList;
     public Rigidbody2D rigidbody2D;
 
+    public float playerVelocityX = 0;
+    public float playerVelocityY = 0;
+    public Vector2 dir;
     private bool isRun = false;
-    private Vector2 dir;
     private float moveX = 0;
     private float moveY = -3.45f;
-    private float playerVelocityX = 0;
-    private float playerVelocityY = 0;
 
     [Header("Jump")]
     public float rotationForce = 0;
@@ -101,6 +104,14 @@ public class PlayerController : MonoBehaviour
 
     public void CharacterAnimChange(int type)
     {
+        if(type != 0)
+        {
+            if (ChangeEffectCorutine != null)
+                StopCoroutine(ChangeEffectCorutine);
+
+            ChangeEffectCorutine = StartCoroutine(ChangeEffectActive());
+        }
+
         playerAnimator.runtimeAnimatorController = playerCharacterList[type];
     }
 
@@ -134,9 +145,20 @@ public class PlayerController : MonoBehaviour
         moveX += playerVelocityX * Time.deltaTime * 0.75f;
     }
 
+    private IEnumerator ChangeEffectActive()
+    {
+        yield return null;
+        ChangeEffect.SetActive(false);
+        ChangeEffect.SetActive(true);
+
+        yield return YieldCacheMgr.WaitForSeconds(1.0f);
+
+        ChangeEffect.SetActive(false);
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
-
+        //TODO: Log
     }
 
     private void OnCollisionStay2D(Collision2D other)
@@ -163,7 +185,7 @@ public class PlayerController : MonoBehaviour
                     curFloor = platform.platformLevel;
                     NetworkMgr.Instance.RequestClimb(climbReqDto);
 
-                    //TODO: Log ³²±â±â
+                    //TODO: Log
                 }
             }
         }

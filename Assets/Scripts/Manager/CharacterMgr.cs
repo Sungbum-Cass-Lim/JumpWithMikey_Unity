@@ -36,6 +36,7 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
         velocityY = gameGetItemResDto.effect.velocityY;
         jump = gameGetItemResDto.effect.jump;
         isTank = gameGetItemResDto.effect.isTank;
+        plaMagnet = 0;
 
         if (gameGetItemResDto.effect.PLAMagnet > 0)
         {

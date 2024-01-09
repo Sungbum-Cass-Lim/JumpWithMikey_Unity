@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8670575638081101737}
   - component: {fileID: 8020548639963296755}
   - component: {fileID: 560029741239926916}
+  - component: {fileID: -5728362533072953124}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
@@ -29,11 +30,11 @@ Transform:
   m_GameObject: {fileID: 7411307178333766193}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.013, y: 0.567, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2823761775945050092
 SpriteRenderer:
@@ -151,7 +152,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31, y: 0.4}
+  m_Size: {x: 0.31, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &560029741239926916
 Rigidbody2D:
@@ -161,7 +162,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7411307178333766193}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -179,4 +180,16 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
+--- !u!114 &-5728362533072953124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411307178333766193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5efe7ecc6f98ae04fa6d3ffb4be8dfcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

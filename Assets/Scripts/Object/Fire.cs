@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fire : MonoBehaviour
+public class Fire : PlatformObj
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void PlayerTouch(PlayerController player)
     {
-        
-    }
+        player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
+        player.playerVelocityY = -15;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //TODO: Log
+
+        //TODO: Send GameEndReq
     }
 }
