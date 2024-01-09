@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public GameObject playerCharacter;
     public SpriteRenderer playerSpriter;
     public Animator playerAnimator;
+    public List<AnimatorOverrideController> playerCharacterList;
     public Rigidbody2D rigidbody2D;
 
     private bool isRun = false;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [Header("Jump")]
     public float rotationForce = 0;
     public float curRotation = 0;
+    public bool isJump = false;
     private int jumpCount = 0;
     private float gravity = 1.2f;
 
@@ -36,20 +38,30 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (isJump == false)
         {
-            dir = Vector2.left;
-            playerSpriter.flipX = true;
 
-            Jump();
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            dir = Vector2.right;
-            playerSpriter.flipX = false;
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                dir = Vector2.left;
+                playerSpriter.flipX = true;
 
-            Jump();
+                Jump();
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                dir = Vector2.right;
+                playerSpriter.flipX = false;
+
+                Jump();
+            }
         }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+            isJump = false;
+        else if (Input.GetKeyUp(KeyCode.RightArrow))
+            isJump = false;
+
 
         if (dir.x != 0 && isRun == false)
         {
@@ -69,12 +81,12 @@ public class PlayerController : MonoBehaviour
             //실제 위치 이동 부분
             rigidbody2D.MovePosition(new Vector2(moveX, moveY));
 
-            if(curRotation < 0)
+            if (curRotation < 0)
             {
                 curRotation -= rotationForce * Time.deltaTime;
                 playerCharacter.transform.eulerAngles = Vector3.forward * dir.x * curRotation;
 
-                if(curRotation < -360)
+                if (curRotation < -360)
                 {
                     curRotation = 0;
                     playerCharacter.transform.eulerAngles = Vector3.zero;
@@ -87,6 +99,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void CharacterAnimChange(int type)
+    {
+        playerAnimator.runtimeAnimatorController = playerCharacterList[type];
+    }
+
     private void Jump()
     {
         if (jumpCount < CharacterMgr.Instance.jump)
@@ -96,6 +113,7 @@ public class PlayerController : MonoBehaviour
             transform.eulerAngles = Vector3.zero;
             curRotation = -rotationForce * Time.deltaTime;
 
+            isJump = true;
             jumpCount++;
         }
     }
@@ -132,7 +150,7 @@ public class PlayerController : MonoBehaviour
                 playerVelocityY = 0;
                 jumpCount = 0;
 
-                if(curFloor < platform.platformLevel)
+                if (curFloor < platform.platformLevel)
                 {
                     GameMgr.Instance.GameScore += (platform.platformLevel - curFloor) * 10;
 

@@ -16,7 +16,7 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     [Header("Current Game Info")]
     public GameState gameState = GameState.Title;
     public PlayerController Player { private set; get; }
-    public int GameScore = 0;
+    public int GameScore { set; get; }
 
     [Header("Importent Game Component")]
     public GameLogic GameLogic = null;

@@ -20,13 +20,11 @@ public class PlatformGenerator : MonoBehaviour
     private float MinX = -3.15f;
     private float MinY = -4.25f;
     private float intervalX = 0.7f;
-    private float intervalY = 2.9f;
+    private float intervalY = 2.8f;
     private int stackPosY = 0;
 
     public void Initialize()
     {
-        Debug.Log("StartGenarate");
-
         int Count = GameMgr.Instance.platforms.Count;
         for (int i = 0; i < Count; i++)
         {

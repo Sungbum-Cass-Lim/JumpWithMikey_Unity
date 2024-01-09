@@ -5,8 +5,8 @@ using UnityEngine;
 public class CharacterMgr : SingletonBase<CharacterMgr>
 {
     public string name { private set; get; }
-    public int velocityX { private set; get; }
-    public int velocityY { private set; get; }
+    public float velocityX { private set; get; }
+    public float velocityY { private set; get; }
     public int jump { private set; get; }
     public bool isTank { private set; get; }
     public int plaMagnet { private set; get; }
@@ -25,9 +25,11 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
         this.isChange = false;
         this.changeTime = 0;
         this.name = "standard";
+
+        GameMgr.Instance.Player.CharacterAnimChange(0);
     }
 
-    private void SetCharacter(GameGetItemResDto gameGetItemResDto, int duration)
+    public void SetCharacter(GameGetItemResDto gameGetItemResDto, int duration)
     {
         name = gameGetItemResDto.effect.name;
         velocityX = gameGetItemResDto.effect.velocityX;
@@ -42,6 +44,24 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
 
         changeTime = duration;
         isChange = true;
+
+        int type = 0;
+        switch(name)
+        {
+            case "magnet":
+                type = 1;
+                break;
+            case "tripleJump":
+                type = 2;
+                break;
+            case "tank":
+                type = 3;
+                break;
+            case "highJump":
+                type = 4;
+                break;
+        }
+        GameMgr.Instance.Player.CharacterAnimChange(type);
     }
 
 }

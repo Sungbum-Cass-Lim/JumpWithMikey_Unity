@@ -19,8 +19,8 @@ public class GameExpiredResDto : BaseResDto { }
 public class CharacterEffect
 {
     public string name;
-    public int velocityX;
-    public int velocityY;
+    public float velocityX;
+    public float velocityY;
     public int jump;
     public bool isTank;
     public int PLAMagnet; // server give 1 is client value 400

@@ -71,17 +71,17 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             Debug.Log($"Error msg: {resp.message}");
         });
 
-        serverManager.Socket.On<GameGetItemResDto>("collectItem", (res) =>
+        serverManager.Socket.On<string>("collectItem", (res) =>
         {
-
+            OnCollectItem(res);
         });
 
-        serverManager.Socket.On<GameExpiredResDto>("expiredDuration", (res) =>
+        serverManager.Socket.On<string>("expiredDuration", (res) =>
         {
-
+            OnExpiredDuration(res);
         });
 
-        serverManager.Socket.On<GameDeadResDto>("dead", (res) =>
+        serverManager.Socket.On<string>("dead", (res) =>
         {
 
         });
@@ -92,23 +92,6 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         });
     }
 
-    #region On Game Data
-    private void OnCollectItem(string res)
-    {
-
-    }
-
-    private void OnExpiredDuration(string res)
-    {
-
-    }
-
-    private void OnDead(string res)
-    {
-
-    }
-    #endregion
-
     #region Start Communication
     public void RequestStartGame(GameStartReqDto data)
     {
@@ -117,7 +100,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     private void ResponseStartGame(string res)
     {
         Debug.Log($"[Recv : StartGame] => {res}");
-        GameStartResDto gameStartRes = JsonConvert.DeserializeObject<GameStartResDto>(res);
+        var gameStartRes = JsonConvert.DeserializeObject<GameStartResDto>(res);
 
         GameMgr.Instance.Initialize(gameStartRes.height, gameStartRes.platforms, gameStartRes.map, gameStartRes.result, gameStartRes.renderCondition);
     }
@@ -131,7 +114,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     public void ResponseClimb(string res)
     {
         //Debug.Log($"[Recv : Climb] => {res}");
-        ClimbResDto climbResDto = JsonConvert.DeserializeObject<ClimbResDto>(res);
+        var climbResDto = JsonConvert.DeserializeObject<ClimbResDto>(res);
 
         if (climbResDto.platforms != null)
         {
@@ -143,7 +126,37 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     }
     #endregion
 
+    #region Item Communication
+    public void RequestItem(GameGetItemReqDto data)
+    {
+        Send("collectItem", data);
+    }
+
+    private void OnCollectItem(string res)
+    {
+        Debug.Log($"[Recv : Climb] => {res}");
+        var gameGetItemResDto = JsonConvert.DeserializeObject<GameGetItemResDto>(res);
+
+        CharacterMgr.Instance.SetCharacter(gameGetItemResDto, gameGetItemResDto.duration);
+
+        //TODO: Change Time
+    }
+
+    private void OnExpiredDuration(string res)
+    {
+        Debug.Log($"[Recv : Climb] => {res}");
+        var gameExpiredResDto = JsonConvert.DeserializeObject<GameExpiredResDto>(res);
+
+        CharacterMgr.Instance.Initialize();
+    }
+    #endregion
+
     #region End Communication
+    private void OnDead(string res)
+    {
+
+    }
+
     public void RequestEndGame(GameEndReqDto data)
     {
         Send<string>("EndGame", data, ResponseEndGame);
@@ -151,7 +164,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     private void ResponseEndGame(string res)
     {
         Debug.Log($"[Recv : EndGame] => {res}");
-        GameEndResDto endRes = JsonUtility.FromJson<GameEndResDto>(res);
+        var endRes = JsonUtility.FromJson<GameEndResDto>(res);
 
 #if !UNITY_EDITOR && UNITY_WEBGL
         WebNetworkMgr.SendEndGame(endRes.score);
@@ -182,7 +195,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         var jsonData = JsonConvert.SerializeObject(data);
 
-        //Debug.Log($"[Send : {message}] => " + jsonData);
+        Debug.Log($"[Send : {message}] => " + jsonData);
         serverSocket.Emit(message, jsonData);
     }
     private void Send<T>(string message, BaseReqDto data, Action<T> callBack)
