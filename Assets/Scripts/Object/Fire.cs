@@ -12,5 +12,7 @@ public class Fire : PlatformObj
         //TODO: Log
 
         //TODO: Send GameEndReq
+        Debug.Log("Player Die");
+        player.isDie = true;
     }
 }

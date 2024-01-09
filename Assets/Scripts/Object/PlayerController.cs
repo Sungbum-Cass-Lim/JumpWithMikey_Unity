@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool isDie = false;
+
+    [Header("Player Parts")]
     public GameObject playerCharacter;
     public GameObject ChangeEffect;
     public Text ChangeTimeText;
@@ -19,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public List<AnimatorOverrideController> playerCharacterList;
     public Rigidbody2D rigidbody2D;
 
+    [Header("Move")]
     public float playerVelocityX = 0;
     public float playerVelocityY = 0;
     public Vector2 dir;
@@ -45,7 +49,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isJump == false)
         {
-
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 dir = Vector2.left;
@@ -92,7 +95,7 @@ public class PlayerController : MonoBehaviour
             //실제 위치 이동 부분
             rigidbody2D.MovePosition(new Vector2(moveX, moveY));
 
-            if (curRotation < 0)
+            if (curRotation < 0 && isDie == false)
             {
                 curRotation -= rotationForce * Time.deltaTime;
                 playerCharacter.transform.eulerAngles = Vector3.forward * dir.x * curRotation;
@@ -132,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (jumpCount < CharacterMgr.Instance.jump)
+        if (jumpCount < CharacterMgr.Instance.jump && isDie == false)
         {
             playerVelocityY = CharacterMgr.Instance.velocityY * 0.75f;
 

@@ -94,6 +94,11 @@ public class PlatformGenerator : MonoBehaviour
                 {
                     var enemy = ObjectPoolMgr.Instance.Load<Enemy>(PoolObjectType.Object, "Enemy");
 
+                    enemy.enemyVelocityX = 1.0f;
+                    enemy.enemyVelocityY = 14;
+                    enemy.isDie = false;
+                    enemy.dir.x = enemyDirIdx;
+
                     enemy.transform.position = new Vector2(createdPlatform.transform.position.x, createdPlatform.transform.position.y + 0.6f);
                 }
 
