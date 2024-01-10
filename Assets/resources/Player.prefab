@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dabee36f48d94334b8a9fa575ac6a99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDie: 0
   playerCharacter: {fileID: 6953254126018883495}
   ChangeEffect: {fileID: 7906557950387942515}
   ChangeTimeText: {fileID: 1762749890895033778}
@@ -432,7 +433,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
 --- !u!50 &2535993200455101188
 Rigidbody2D:

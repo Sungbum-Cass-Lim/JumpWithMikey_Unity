@@ -183,6 +183,7 @@ MonoBehaviour:
   item: {fileID: 480881708187922545}
   fire: {fileID: 4517930569323490106}
   platformLevel: 0
+  platformIdx: 0
 --- !u!1001 &1449582281674423655
 PrefabInstance:
   m_ObjectHideFlags: 0

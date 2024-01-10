@@ -19,9 +19,9 @@ public class PlatformObj : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D Other)
+    protected virtual void OnCollisionEnter2D(Collision2D other)
     {
-        if(Other.gameObject.TryGetComponent<PlayerController>(out var player))
+        if(other.gameObject.TryGetComponent<PlayerController>(out var player))
         {
             PlayerTouch(player);
         }

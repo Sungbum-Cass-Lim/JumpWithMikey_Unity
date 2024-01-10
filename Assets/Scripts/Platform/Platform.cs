@@ -22,6 +22,7 @@ public class Platform : MonoBehaviour
 
     private PlatformGenerator parentPlatform;
     public int platformLevel;
+    public int platformIdx;
 
     private void LateUpdate()
     {

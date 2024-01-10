@@ -35,24 +35,24 @@ public class PlatformGenerator : MonoBehaviour
 
     public void MakePlatform(int makeCount)
     {
-        int[] currentPlatform = null;
+        int[] currentPlatforms = null;
 
         if (GameMgr.Instance.platforms.TryDequeue(out var firstIdx))
         {
-            currentPlatform = firstIdx;
+            currentPlatforms = firstIdx;
         }
 
-        for (int i = 0; i < currentPlatform.Length; i++)
+        for (int i = 0; i < currentPlatforms.Length; i++)
         {
             Platform createdPlatform = null;
 
-            int platformIdx = platformBin & currentPlatform[i];
-            int itemsIdx = itemsBin & currentPlatform[i];
-            int enemyIdx = enemyBin & currentPlatform[i];
+            int platformIdx = platformBin & currentPlatforms[i];
+            int itemsIdx = itemsBin & currentPlatforms[i];
+            int enemyIdx = enemyBin & currentPlatforms[i];
             int enemyDirIdx = 0;
 
             if (enemyIdx == 32)
-                enemyDirIdx = enemyDirectionBin & currentPlatform[i];
+                enemyDirIdx = enemyDirectionBin & currentPlatforms[i];
 
             if (platformIdx == 0)
                 continue;
@@ -78,6 +78,7 @@ public class PlatformGenerator : MonoBehaviour
 
                 //ÇÃ·§Æû Ãþ ÀÔ·Â
                 createdPlatform.platformLevel = this.platformLevel;
+                createdPlatform.platformIdx = i;
 
                 // ÇÃ·§Æû À§Ä¡ ÁöÁ¤
                 if (makeCount != 0)
@@ -97,7 +98,9 @@ public class PlatformGenerator : MonoBehaviour
                     enemy.enemyVelocityX = 1.0f;
                     enemy.enemyVelocityY = 14;
                     enemy.isDie = false;
-                    enemy.dir.x = enemyDirIdx;
+                    enemy.dir.x = enemyDirIdx == 64 ? 1 : -1;
+                    enemy.moveRadius = currentPlatforms;
+                    enemy.curPlatformIdx = i;
 
                     enemy.transform.position = new Vector2(createdPlatform.transform.position.x, createdPlatform.transform.position.y + 0.6f);
                 }
