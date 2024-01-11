@@ -14,8 +14,8 @@ public class Enemy : PlatformObj
     public Vector2 dir;
     public float enemyVelocityX;
     public float enemyVelocityY;
-    private float moveX;
-    private float moveY;
+    public float moveX { set; get; }
+    public float moveY { set; get; }
     private bool isRotate = false;
 
     private float gravity = 1.8f;
@@ -25,11 +25,14 @@ public class Enemy : PlatformObj
         //실제 위치 이동 부분
         Move();
 
-        transform.position = new Vector2(moveX, transform.position.y);
+        transform.position = new Vector2(moveX, moveY);
 
-        //다음 올라갈 위치 선정
-        enemyVelocityY += this.gravity * Time.deltaTime * 50;
-        moveY -= enemyVelocityY * Time.deltaTime;
+        if (isDie == true)
+        {
+            //다음 올라갈 위치 선정
+            enemyVelocityY += this.gravity * Time.deltaTime * 25f;
+            moveY -= enemyVelocityY * Time.deltaTime;
+        }
     }
 
     private void Move()
@@ -47,7 +50,7 @@ public class Enemy : PlatformObj
 
         var nextPlatformIdx = curPlatformIdx + (int)dir.x;
 
-        //-1, 10
+        //curPlatformIdx: -1, 10
         if ((curPlatformIdx >= moveRadius.Length || curPlatformIdx < 0) && isRotate == false)
         {
             isRotate = true;
@@ -58,7 +61,7 @@ public class Enemy : PlatformObj
                 dir.x *= -1;
         }
 
-        //0 ~ 9
+        //curPlatformIdx: 0 ~ 9
         else if (nextPlatformIdx >= 0 && nextPlatformIdx < moveRadius.Length && moveRadius[nextPlatformIdx] == 0)
         {
             isRotate = false;
@@ -70,15 +73,24 @@ public class Enemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        if((player.transform.position.y > transform.position.y && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
+        if ((player.transform.position.y > transform.position.y && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
         {
-            Debug.Log("KillEnemy");
+            player.playerVelocityY = CharacterMgr.Instance.velocityY;
             player.jumpCount = 1;
             player.curRotation = 0;
+
+            isDie = true;
             enemyVelocityX *= 1.5f;
+            moveRadius = new int[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+
+            transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * dir.x;
+
+            GameMgr.Instance.GameScore += 100;
+
+            //TODO: Log
         }
 
-        else if(player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && isDie == false && player.jumpCount != 0)
+        else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && isDie == false && player.jumpCount != 0)
         {
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
             player.playerVelocityY = -15;
@@ -90,7 +102,7 @@ public class Enemy : PlatformObj
             player.isDie = true;
         }
 
-        else if(player.jumpCount == 0 && isDie == false)
+        else if (player.jumpCount == 0 && isDie == false)
         {
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
             player.playerVelocityY = -15;

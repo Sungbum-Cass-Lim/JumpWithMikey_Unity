@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
         }
 
         playerVelocityX = (640 / (100 * CharacterMgr.Instance.velocityX)) * dir.x;
-        moveX += playerVelocityX * Time.deltaTime * 0.75f;
+        moveX += playerVelocityX * Time.deltaTime * 0.65f;
     }
 
     private IEnumerator ChangeEffectActive()

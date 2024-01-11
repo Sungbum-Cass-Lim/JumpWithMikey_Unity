@@ -151,6 +151,14 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     }
     #endregion
 
+    #region renderCat Communication
+    public void RequestRenderCat(GameRenderCatReqDto data)
+    {
+        Send("renderCat", data);
+    }
+
+    #endregion
+
     #region End Communication
     private void OnDead(string res)
     {

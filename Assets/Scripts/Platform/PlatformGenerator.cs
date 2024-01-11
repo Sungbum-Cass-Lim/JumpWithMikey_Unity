@@ -93,6 +93,7 @@ public class PlatformGenerator : MonoBehaviour
                 //Àû »ý¼º
                 if(enemyIdx == 32)
                 {
+                    //Enemy Spawn
                     var enemy = ObjectPoolMgr.Instance.Load<Enemy>(PoolObjectType.Object, "Enemy");
 
                     enemy.enemyVelocityX = 1.0f;
@@ -102,7 +103,13 @@ public class PlatformGenerator : MonoBehaviour
                     enemy.moveRadius = currentPlatforms;
                     enemy.curPlatformIdx = i;
 
-                    enemy.transform.position = new Vector2(createdPlatform.transform.position.x, createdPlatform.transform.position.y + 0.6f);
+                    enemy.moveX = createdPlatform.transform.position.x;
+                    enemy.moveY = createdPlatform.transform.position.y + 0.6f;
+
+                    //RenderCat Communication
+                    var renderCatDto = new GameRenderCatReqDto();
+                    renderCatDto.floor = platformIdx;
+                    NetworkMgr.Instance.RequestRenderCat(renderCatDto);
                 }
 
                 // ÇÃ·§Æû Init
