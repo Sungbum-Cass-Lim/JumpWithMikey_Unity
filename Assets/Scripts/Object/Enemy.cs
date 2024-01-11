@@ -70,13 +70,36 @@ public class Enemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
-        player.playerVelocityY = -15;
+        if((player.transform.position.y > transform.position.y && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
+        {
+            Debug.Log("KillEnemy");
+            player.jumpCount = 1;
+            player.curRotation = 0;
+            enemyVelocityX *= 1.5f;
+        }
 
-        //TODO: Log
+        else if(player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && isDie == false && player.jumpCount != 0)
+        {
+            player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
+            player.playerVelocityY = -15;
 
-        //TODO: Send GameEndReq
-        Debug.Log("Player Die");
-        player.isDie = true;
+            //TODO: Log
+
+            //TODO: Send GameEndReq
+            Debug.Log("Player Die");
+            player.isDie = true;
+        }
+
+        else if(player.jumpCount == 0 && isDie == false)
+        {
+            player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
+            player.playerVelocityY = -15;
+
+            //TODO: Log
+
+            //TODO: Send GameEndReq
+            Debug.Log("Player Die");
+            player.isDie = true;
+        }
     }
 }

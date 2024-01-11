@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     public float rotationForce = 0;
     public float curRotation = 0;
     public bool isJump = false;
-    private int jumpCount = 0;
+    public int jumpCount = 0;
     private float gravity = 1.2f;
 
     [Header("Floor")]
