@@ -96,6 +96,7 @@ public class PlatformGenerator : MonoBehaviour
                 {
                     //Enemy Spawn
                     var enemy = ObjectPoolMgr.Instance.Load<Enemy>(PoolObjectType.Object, "Enemy");
+                    enemy.Initialize();
 
                     enemy.enemyVelocityX = 1.0f;
                     enemy.enemyVelocityY = 14;
@@ -106,6 +107,8 @@ public class PlatformGenerator : MonoBehaviour
 
                     enemy.moveX = createdPlatform.transform.position.x;
                     enemy.moveY = createdPlatform.transform.position.y + 0.6f;
+
+                    createdPlatform.curObjStack.Push(enemy);
 
                     //RenderCat Communication
                     var renderCatDto = new GameRenderCatReqDto();
@@ -122,6 +125,7 @@ public class PlatformGenerator : MonoBehaviour
                     vending.transform.SetParent(createdPlatform.transform);
                     vending.Initialize();
                 }
+
                 //Can
                 if (Random.Range(0, 10) >= 9)
                 {
@@ -169,8 +173,6 @@ public class PlatformGenerator : MonoBehaviour
                         fire.Initialize();
                         break;
                 }
-
-
 
                 createdPlatform.Initialize(this);
             }

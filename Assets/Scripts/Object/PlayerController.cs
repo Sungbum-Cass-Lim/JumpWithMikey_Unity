@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
             GameMgr.Instance.GameLogic.TutorialOff();
         }
 
-        if(CharacterMgr.Instance.changeTime > 0)
+        if (CharacterMgr.Instance.changeTime > 0)
         {
             CharacterMgr.Instance.changeTime -= Time.deltaTime;
             ChangeTimeText.text = Mathf.Ceil(CharacterMgr.Instance.changeTime).ToString();
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
     public void CharacterAnimChange(int type)
     {
-        if(type != 0)
+        if (type != 0)
         {
             if (ChangeEffectCorutine != null)
                 StopCoroutine(ChangeEffectCorutine);
@@ -188,13 +188,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        //TODO: Log
+        if (other.gameObject.TryGetComponent<Platform>(out var platform))
+        {
+            //TODO: Log
+        }
     }
 
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
+            if (transform.position.y > platform.Top() && passFloor < platform.platformLevel)
+                passFloor = platform.platformLevel;
+
             if (moveY > platform.Top() && playerVelocityY > 0)
             {
                 moveY = platform.Top() + 0.01f;

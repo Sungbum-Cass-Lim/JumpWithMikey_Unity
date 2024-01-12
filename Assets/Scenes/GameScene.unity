@@ -1268,6 +1268,9 @@ MonoBehaviour:
   tutorial: {fileID: 2094411593}
   scoreText: {fileID: 293814986}
   platformGenerator: {fileID: 879009343}
+  isFollowerSpawn: 0
+  waitingTime: 0
+  followerEnemyList: []
 --- !u!4 &794171055
 Transform:
   m_ObjectHideFlags: 0
@@ -1933,7 +1936,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -830056685
+  m_SortingLayerID: 821238173
   m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &1654319629
@@ -2164,7 +2167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1941440860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2225,7 +2228,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 821238173
+  m_SortingLayerID: -168461907
   m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!224 &1941440863

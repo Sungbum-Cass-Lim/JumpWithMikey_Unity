@@ -35,6 +35,12 @@ public class Enemy : PlatformObj
         }
     }
 
+    public override void Initialize()
+    {
+        isDie = false;
+        transform.eulerAngles = Vector3.zero;
+    }
+
     private void Move()
     {
         if (dir.x < 0) //TODO: 공식화 필요

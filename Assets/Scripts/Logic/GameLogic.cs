@@ -29,7 +29,7 @@ public class GameLogic : MonoBehaviour
             MakeFollower(-3.6f);
         }
 
-        followerEnemyList[2].platformDistance = 3;
+        followerEnemyList[2].maxDistance = 3;
     }
 
     private void Update()
@@ -42,7 +42,7 @@ public class GameLogic : MonoBehaviour
             cameraY = player.transform.position.y + 0.1f;
         }
 
-        if(isFollowerSpawn == false)
+        if(isFollowerSpawn == false && GameMgr.Instance.gameState == GameState.Game)
         {
             waitingTime += Time.deltaTime;
 
@@ -51,7 +51,9 @@ public class GameLogic : MonoBehaviour
                 isFollowerSpawn = true;
 
                 foreach (var follower in followerEnemyList)
+                {
                     follower.gameObject.SetActive(true);
+                }
             }
         }
     }
@@ -75,12 +77,17 @@ public class GameLogic : MonoBehaviour
     public void MakeFollower(float posY)
     {
         FollowEnemy follower = ObjectPoolMgr.Instance.Load<FollowEnemy>(PoolObjectType.Object, "Follower");
+
         follower.transform.position = new Vector2(Random.Range(-3.15f, 3.15f), posY);
+        follower.dir.x = 1;
         follower.enemyVelocityX = -5.5f;
         follower.moveY = posY;
         follower.moveRadius = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-        follower.gameObject.SetActive(false);
+        follower.curFloor = 0;
+        follower.maxDistance = 1;
 
+        follower.Initialize();
+        follower.gameObject.SetActive(false);
         followerEnemyList.Add(follower);
     }
 
