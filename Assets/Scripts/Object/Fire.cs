@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Fire : PlatformObj
 {
+    public override void Initialize()
+    {
+        transform.localPosition = SpawnPos;
+    }
+
     protected override void PlayerTouch(PlayerController player)
     {
         player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
@@ -12,7 +17,7 @@ public class Fire : PlatformObj
         //TODO: Log
 
         //TODO: Send GameEndReq
-        Debug.Log("Player Die");
+        Debug.Log("player Die");
         player.isDie = true;
     }
 }

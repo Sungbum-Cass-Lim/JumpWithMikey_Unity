@@ -14,49 +14,32 @@ public class Platform : MonoBehaviour
 {
     public BoxCollider2D boxCollider2D;
 
-    public GameObject vending;
-    public GameObject can;
-    public GameObject pla;
-    public GameObject item;
-    public GameObject fire;
+    public Stack<PlatformObj> curObjStack = new Stack<PlatformObj>();
 
+    private bool isRelease = false;
     private PlatformGenerator parentPlatform;
     public int platformLevel;
     public int platformIdx;
 
     private void LateUpdate()
     {
-        if (GameMgr.Instance.Player.curFloor - 2 > platformLevel)
+        if (GameMgr.Instance.player.curFloor - 2 > platformLevel && isRelease == false)
+        {
+            isRelease = true;
+
+            while(curObjStack.TryPop(out var obj))
+            {
+                ObjectPoolMgr.Instance.ReleasePool(obj.gameObject);
+            }
+
             ObjectPoolMgr.Instance.ReleasePool(gameObject);
+        }
     }
 
-    public void Initialize(PlatformGenerator parentPlatform, ObjectType objectType)
+    public void Initialize(PlatformGenerator parentPlatform)
     {
-        vending.SetActive(false);
-        can.SetActive(false);
-        pla.SetActive(false);
-        item.SetActive(false);
-        fire.SetActive(false);
-
-        if (Random.Range(0, 10) >= 9)
-            vending.SetActive(true);
-        if (Random.Range(0, 10) >= 9)
-            can.SetActive(true);
-
-        switch (objectType)
-        {
-            case ObjectType.Pla:
-                pla.SetActive(true);
-                break;
-            case ObjectType.Item:
-                item.SetActive(true);
-                break;
-            case ObjectType.Fire:
-                fire.SetActive(true);
-                break;
-        }
-
         this.parentPlatform = parentPlatform;
+        this.isRelease = false;
     }
 
     public float Top()

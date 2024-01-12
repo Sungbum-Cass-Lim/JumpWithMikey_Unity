@@ -26,7 +26,7 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
         this.changeTime = 0;
         this.name = "standard";
 
-        GameMgr.Instance.Player.CharacterAnimChange(0);
+        GameMgr.Instance.player.CharacterAnimChange(0);
     }
 
     public void SetCharacter(GameGetItemResDto gameGetItemResDto, float duration)
@@ -62,7 +62,7 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
                 type = 4;
                 break;
         }
-        GameMgr.Instance.Player.CharacterAnimChange(type);
+        GameMgr.Instance.player.CharacterAnimChange(type);
     }
 
 }

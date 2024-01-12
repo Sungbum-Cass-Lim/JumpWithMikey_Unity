@@ -15,8 +15,8 @@ public class GameMgr : SingletonComponentBase<GameMgr>
 
     [Header("Current Game Info")]
     public GameState gameState = GameState.Title;
-    public PlayerController Player { private set; get; }
-    public int GameScore { set; get; }
+    public PlayerController player { private set; get; }
+    public int gameScore { set; get; }
 
     [Header("Importent Game Component")]
     public GameLogic GameLogic = null;
@@ -56,16 +56,16 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     public void GameStart()
     {
         gameState = GameState.Game;
-        Player = ObjectPoolMgr.Instance.Load<PlayerController>(PoolObjectType.Player, "Player");
+        player = ObjectPoolMgr.Instance.Load<PlayerController>(PoolObjectType.player, "player");
 
-        GameLogic.Initialize(Player);
+        GameLogic.Initialize(player);
     }
 
     public void GameOver()
     {
         gameState = GameState.GameEnd;
-        GameScore = 0;
-        Player = null;
+        gameScore = 0;
+        player = null;
 
         muteBackup = SoundMgr.isMute;
 

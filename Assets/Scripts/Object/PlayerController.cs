@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     public bool isDie = false;
 
-    [Header("Player Parts")]
+    [Header("player Parts")]
     public GameObject playerCharacter;
     public GameObject ChangeEffect;
     public Text ChangeTimeText;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public float playerVelocityX = 0;
     public float playerVelocityY = 0;
     public Vector2 dir;
-    private bool isRun = false;
+    public bool isRun = false;
     private float moveX = 0;
     private float moveY = -3.45f;
 
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Floor")]
     public int curFloor = 0;
+    public int passFloor = 0;
 
     private void Start()
     {
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        #region JumpKey
         if (isJump == false)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -69,7 +71,17 @@ public class PlayerController : MonoBehaviour
             isJump = false;
         else if (Input.GetKeyUp(KeyCode.RightArrow))
             isJump = false;
+        #endregion
 
+        #region PlayerMissingFeet
+        if (transform.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
+        {
+            isDie = true;
+            EditorApplication.isPaused = true;
+
+            //TODO: Log
+        }
+        #endregion
 
         if (dir.x != 0 && isRun == false)
         {
@@ -192,13 +204,13 @@ public class PlayerController : MonoBehaviour
 
                 if (curFloor < platform.platformLevel)
                 {
-                    GameMgr.Instance.GameScore += (platform.platformLevel - curFloor) * 10;
+                    GameMgr.Instance.gameScore += (platform.platformLevel - curFloor) * 10;
 
                     ClimbReqDto climbReqDto = new();
 
                     climbReqDto.floorsUp = platform.platformLevel - curFloor;
                     climbReqDto.floor = platform.platformLevel;
-                    climbReqDto.score = GameMgr.Instance.GameScore;
+                    climbReqDto.score = GameMgr.Instance.gameScore;
 
                     curFloor = platform.platformLevel;
                     NetworkMgr.Instance.RequestClimb(climbReqDto);

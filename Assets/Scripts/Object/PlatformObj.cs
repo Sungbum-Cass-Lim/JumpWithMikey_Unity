@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class PlatformObj : MonoBehaviour
 {
-    private void OnEnable()
-    {
-        Initialize();
-    }
+    public Vector2 SpawnPos;
 
-    protected virtual void Initialize()
+    public virtual void Initialize()
     {
-
+        
     }
 
     protected virtual void PlayerTouch(PlayerController player)

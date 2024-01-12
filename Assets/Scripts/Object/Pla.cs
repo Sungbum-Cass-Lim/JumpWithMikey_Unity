@@ -15,17 +15,18 @@ public class Pla : PlatformObj
     {
         if (isEat == false && CharacterMgr.Instance.plaMagnet > 0)
         {
-            distance = Vector3.Distance(transform.position, GameMgr.Instance.Player.transform.position);
+            distance = Vector3.Distance(transform.position, GameMgr.Instance.player.transform.position);
 
             if (distance < CharacterMgr.Instance.plaMagnet * maxDistance)
             {
-                transform.position = Vector2.Lerp(transform.position, GameMgr.Instance.Player.transform.position, MagenetForce * Time.deltaTime);
+                transform.position = Vector2.Lerp(transform.position, GameMgr.Instance.player.transform.position, MagenetForce * Time.deltaTime);
             }
         }
     }
 
-    protected override void Initialize()
+    public override void Initialize()
     {
+        transform.localPosition = SpawnPos;
         isEat = false;
         distance = 0;
     }
@@ -36,7 +37,7 @@ public class Pla : PlatformObj
 
         isEat = true;
 
-        GameMgr.Instance.GameScore += 100;
+        GameMgr.Instance.gameScore += 100;
         gameObject.SetActive(false);
     }
 

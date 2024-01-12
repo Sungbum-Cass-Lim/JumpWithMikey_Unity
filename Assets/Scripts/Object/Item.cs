@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Item : PlatformObj
 {
+    public override void Initialize()
+    {
+        transform.localPosition = SpawnPos;
+    }
+
     protected override void PlayerTouch(PlayerController player)
     {
         //TODO: Log
 
         GameGetItemReqDto gameGetItemReqDto = new();
-        gameGetItemReqDto.score = GameMgr.Instance.GameScore;
+        gameGetItemReqDto.score = GameMgr.Instance.gameScore;
 
         NetworkMgr.Instance.RequestItem(gameGetItemReqDto);
 

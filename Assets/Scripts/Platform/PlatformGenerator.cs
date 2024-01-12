@@ -79,6 +79,7 @@ public class PlatformGenerator : MonoBehaviour
                 //ÇÃ·§Æû Ãþ ÀÔ·Â
                 createdPlatform.platformLevel = this.platformLevel;
                 createdPlatform.platformIdx = i;
+                createdPlatform.transform.SetParent(transform);
 
                 // ÇÃ·§Æû À§Ä¡ ÁöÁ¤
                 if (makeCount != 0)
@@ -112,22 +113,66 @@ public class PlatformGenerator : MonoBehaviour
                     NetworkMgr.Instance.RequestRenderCat(renderCatDto);
                 }
 
-                // ÇÃ·§Æû Init
-                switch(itemsIdx)
+                //Vending
+                if (Random.Range(0, 10) >= 9)
+                {
+                    var vending = ObjectPoolMgr.Instance.Load<PlatformObj>(PoolObjectType.Object, "Vending");
+
+                    createdPlatform.curObjStack.Push(vending);
+                    vending.transform.SetParent(createdPlatform.transform);
+                    vending.Initialize();
+                }
+                //Can
+                if (Random.Range(0, 10) >= 9)
+                {
+                    PlatformObj can = null;
+
+                    switch(Random.Range(0, 2))
+                    {
+                        case 0:
+                            can = ObjectPoolMgr.Instance.Load<PlatformObj>(PoolObjectType.Object, "GreenCan");
+                            break;
+                        case 1:
+                            can = ObjectPoolMgr.Instance.Load<PlatformObj>(PoolObjectType.Object, "BlueCan");
+                            break;
+                        //case 2:
+                        //    can = ObjectPoolMgr.Instance.Load<Transform>(PoolObjectType.Object, "HorizontalCan");
+                        //    break;
+                    }
+
+                    createdPlatform.curObjStack.Push(can);
+                    can.transform.SetParent(createdPlatform.transform);
+                    can.Initialize();
+                }
+
+                //ÇÃ·§Æû Init
+                switch (itemsIdx)
                 {
                     case 8:
-                        createdPlatform.Initialize(this, ObjectType.Pla);
+                        Pla pla = ObjectPoolMgr.Instance.Load<Pla>(PoolObjectType.Object, "Pla");
+                        createdPlatform.curObjStack.Push(pla);
+                        pla.transform.SetParent(createdPlatform.transform);
+                        pla.Initialize();
                         break;
+
                     case 16:
-                        createdPlatform.Initialize(this, ObjectType.Item);
+                        Item item = ObjectPoolMgr.Instance.Load<Item>(PoolObjectType.Object, "Item");
+                        createdPlatform.curObjStack.Push(item);
+                        item.transform.SetParent(createdPlatform.transform);
+                        item.Initialize();
                         break;
+
                     case 24:
-                        createdPlatform.Initialize(this, ObjectType.Fire);
-                        break;
-                    default:
-                        createdPlatform.Initialize(this, ObjectType.None);
+                        Fire fire = ObjectPoolMgr.Instance.Load<Fire>(PoolObjectType.Object, "Fire");
+                        createdPlatform.curObjStack.Push(fire);
+                        fire.transform.SetParent(createdPlatform.transform);
+                        fire.Initialize();
                         break;
                 }
+
+
+
+                createdPlatform.Initialize(this);
             }
         }
 

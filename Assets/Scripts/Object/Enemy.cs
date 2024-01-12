@@ -85,7 +85,7 @@ public class Enemy : PlatformObj
 
             transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * dir.x;
 
-            GameMgr.Instance.GameScore += 100;
+            GameMgr.Instance.gameScore += 100;
 
             //TODO: Log
         }
@@ -98,7 +98,7 @@ public class Enemy : PlatformObj
             //TODO: Log
 
             //TODO: Send GameEndReq
-            Debug.Log("Player Die");
+            Debug.Log("player Die");
             player.isDie = true;
         }
 
@@ -110,7 +110,7 @@ public class Enemy : PlatformObj
             //TODO: Log
 
             //TODO: Send GameEndReq
-            Debug.Log("Player Die");
+            Debug.Log("player Die");
             player.isDie = true;
         }
     }

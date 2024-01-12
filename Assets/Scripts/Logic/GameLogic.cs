@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -21,14 +18,41 @@ public class GameLogic : MonoBehaviour
     public PlatformGenerator platformGenerator;
     private PlayerController player;
 
+    public bool isFollowerSpawn = false;
+    public float waitingTime = 0.0f;
+    public List<FollowEnemy> followerEnemyList = new List<FollowEnemy>();
+
+    private void Start()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            MakeFollower(-3.6f);
+        }
+
+        followerEnemyList[2].platformDistance = 3;
+    }
+
     private void Update()
     {
-        scoreText.text = $"{GameMgr.Instance.GameScore}";
+        scoreText.text = $"{GameMgr.Instance.gameScore}";
 
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, cameraY, -10), cameraSpeed * Time.deltaTime);
         if (player != null && player.transform.position.y > Camera.main.ScreenToWorldPoint(Vector3.up * Screen.height / 2).y + 0.45f)
         {
             cameraY = player.transform.position.y + 0.1f;
+        }
+
+        if(isFollowerSpawn == false)
+        {
+            waitingTime += Time.deltaTime;
+
+            if(waitingTime > 4)
+            {
+                isFollowerSpawn = true;
+
+                foreach (var follower in followerEnemyList)
+                    follower.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -46,6 +70,18 @@ public class GameLogic : MonoBehaviour
     public void platformGererate()
     {
         platformGenerator.Initialize();
+    }
+
+    public void MakeFollower(float posY)
+    {
+        FollowEnemy follower = ObjectPoolMgr.Instance.Load<FollowEnemy>(PoolObjectType.Object, "Follower");
+        follower.transform.position = new Vector2(Random.Range(-3.15f, 3.15f), posY);
+        follower.enemyVelocityX = -5.5f;
+        follower.moveY = posY;
+        follower.moveRadius = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+        follower.gameObject.SetActive(false);
+
+        followerEnemyList.Add(follower);
     }
 
     public void TutorialOff()
