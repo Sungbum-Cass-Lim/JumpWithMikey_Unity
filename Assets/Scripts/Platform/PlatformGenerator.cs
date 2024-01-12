@@ -7,20 +7,11 @@ public class PlatformGenerator : MonoBehaviour
     public GameLogic gameLogic;
     private int platformLevel = 0;
 
-    private int platformCount = 10;
-    private int enemyCount = 0;
-
     private int platformBin = 7;
     private int itemsBin = 0b11000;
     private int enemyBin = 0b100000;
     private int enemyDirectionBin = 64;
 
-    private int deletePlatform = 0;
-
-    private float MinX = -3.15f;
-    private float MinY = -4.25f;
-    private float intervalX = 0.7f;
-    private float intervalY = 2.8f;
     private int stackPosY = 0;
 
     public void Initialize()
@@ -40,6 +31,7 @@ public class PlatformGenerator : MonoBehaviour
         if (GameMgr.Instance.platforms.TryDequeue(out var firstIdx))
         {
             currentPlatforms = firstIdx;
+            GameMgr.Instance.GameLogic.createdPlatformSaveList.Add(currentPlatforms);
         }
 
         for (int i = 0; i < currentPlatforms.Length; i++)
@@ -84,11 +76,11 @@ public class PlatformGenerator : MonoBehaviour
                 // ÇÃ·§Æû À§Ä¡ ÁöÁ¤
                 if (makeCount != 0)
                 {
-                    createdPlatform.transform.position = new Vector2(intervalX * i + MinX, intervalY * stackPosY + MinY);
+                    createdPlatform.transform.position = new Vector2(GameConfig.INTERVAL_X * i + GameConfig.MIN_X, GameConfig.INTERVAL_Y * stackPosY + GameConfig.MIN_Y);
                 }
                 else
                 {
-                    createdPlatform.transform.position = new Vector2(intervalX * i + MinX, MinY);   
+                    createdPlatform.transform.position = new Vector2(GameConfig.INTERVAL_X * i + GameConfig.MIN_X, GameConfig.MIN_Y);   
                 }
 
                 //Àû »ý¼º

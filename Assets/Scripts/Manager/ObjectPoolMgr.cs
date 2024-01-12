@@ -57,16 +57,16 @@ public class ObjectPoolMgr : SingletonComponentBase<ObjectPoolMgr>
         IncreasePoolObjectCache(5, PoolObjectType.Cloud, "Cloud1");
         IncreasePoolObjectCache(5, PoolObjectType.Cloud, "Cloud2");
 
-        IncreasePoolObjectCache(10, PoolObjectType.Platform, "Platform1");
-        IncreasePoolObjectCache(150, PoolObjectType.Platform, "Platform2");
-        IncreasePoolObjectCache(10, PoolObjectType.Platform, "Platform3");
-        IncreasePoolObjectCache(10, PoolObjectType.Platform, "Platform4");
+        IncreasePoolObjectCache(50, PoolObjectType.Platform, "Platform1");
+        IncreasePoolObjectCache(200, PoolObjectType.Platform, "Platform2");
+        IncreasePoolObjectCache(50, PoolObjectType.Platform, "Platform3");
+        IncreasePoolObjectCache(50, PoolObjectType.Platform, "Platform4");
 
-        IncreasePoolObjectCache(15, PoolObjectType.Object, "Vending");
+        IncreasePoolObjectCache(30, PoolObjectType.Object, "Vending");
         IncreasePoolObjectCache(15, PoolObjectType.Object, "GreenCan");
         //IncreasePoolObjectCache(15, PoolObjectType.Object, "HorizontalCan");
         IncreasePoolObjectCache(15, PoolObjectType.Object, "BlueCan");
-        IncreasePoolObjectCache(15, PoolObjectType.Object, "Pla");
+        IncreasePoolObjectCache(50, PoolObjectType.Object, "Pla");
         IncreasePoolObjectCache(15, PoolObjectType.Object, "Item");
         IncreasePoolObjectCache(15, PoolObjectType.Object, "Fire");
         IncreasePoolObjectCache(10, PoolObjectType.Object, "Enemy");

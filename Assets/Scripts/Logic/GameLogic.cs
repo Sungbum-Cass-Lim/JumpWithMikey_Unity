@@ -20,6 +20,8 @@ public class GameLogic : MonoBehaviour
 
     public bool isFollowerSpawn = false;
     public float waitingTime = 0.0f;
+
+    public List<int[]> createdPlatformSaveList = new List<int[]>();
     public List<FollowEnemy> followerEnemyList = new List<FollowEnemy>();
 
     private void Start()
@@ -80,7 +82,7 @@ public class GameLogic : MonoBehaviour
 
         follower.transform.position = new Vector2(Random.Range(-3.15f, 3.15f), posY);
         follower.dir.x = 1;
-        follower.enemyVelocityX = -5.5f;
+        follower.enemyVelocityX = 5.5f;
         follower.moveY = posY;
         follower.moveRadius = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         follower.curFloor = 0;

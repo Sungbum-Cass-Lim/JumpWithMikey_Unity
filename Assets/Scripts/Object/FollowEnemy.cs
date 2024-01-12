@@ -5,6 +5,7 @@ using UnityEngine;
 public class FollowEnemy : PlatformObj
 {
     public SpriteRenderer enemySpriter;
+    public GameObject bombEffect;
 
     public int[] moveRadius;
     public int curPlatformIdx = 0;
@@ -27,13 +28,12 @@ public class FollowEnemy : PlatformObj
 
     private void FixedUpdate()
     {
-        
         //실제 위치 이동 부분
         Move();
 
         transform.position = new Vector2(moveX, moveY);
 
-        if(isJump)
+        if (isJump)
         {
             //다음 올라갈 위치 선정
             moveY -= enemyVelocityY * Time.deltaTime;
@@ -42,6 +42,17 @@ public class FollowEnemy : PlatformObj
         else
         {
             FollowerJump();
+        }
+
+        if (curFloor + 4 < GameMgr.Instance.player.passFloor)
+        {
+            isJump = true;
+            enemyVelocityY = 0;
+
+            moveX = Random.Range(-3.15f, 3.15f);
+            moveY = GameConfig.INTERVAL_Y * (GameMgr.Instance.player.passFloor - 2) + GameConfig.MIN_Y + 0.8f;
+
+            curFloor = GameMgr.Instance.player.passFloor - 2;
         }
     }
 
@@ -56,12 +67,12 @@ public class FollowEnemy : PlatformObj
         if (dir.x < 0) //TODO: 공식화 필요
         {
             curPlatformIdx = (int)Mathf.Ceil((transform.position.x + 3.15f) / 0.7f);
-            enemySpriter.flipX = true;
+            enemySpriter.flipX = false;
         }
         else
         {
             curPlatformIdx = (int)Mathf.Floor((transform.position.x + 3.15f) / 0.7f);
-            enemySpriter.flipX = false;
+            enemySpriter.flipX = true;
         }
 
         var nextPlatformIdx = curPlatformIdx + (int)dir.x;
@@ -72,19 +83,17 @@ public class FollowEnemy : PlatformObj
             isRotate = true;
 
             if (moveRadius[dir.x > 0 ? 0 : moveRadius.Length - 1] != 0)
-                moveX = 3.5f * dir.x;
+                moveX = 3.5f * -dir.x;
             else
                 dir.x *= -1;
-
-            isRotate = false;
         }
 
         //curPlatformIdx: 0 ~ 9
         else if (nextPlatformIdx >= 0 && nextPlatformIdx < moveRadius.Length && moveRadius[nextPlatformIdx] == 0)
-        {
-            isRotate = false;
             dir.x *= -1;
-        }
+
+        if (curPlatformIdx >= 0 && curPlatformIdx < moveRadius.Length)
+            isRotate = false;
 
         moveX += enemyVelocityX * dir.x * Time.deltaTime * 0.7f;
     }
@@ -92,7 +101,7 @@ public class FollowEnemy : PlatformObj
     private void FollowerJump()
     {
         if (GameMgr.Instance.gameScore < 1000)
-            playerDistance = 1;
+            playerDistance = 2;
         else
             playerDistance = 1;
 
@@ -102,43 +111,59 @@ public class FollowEnemy : PlatformObj
         if (Distance < maxDistance)
             return;
 
-        //TODO: 경공술 중일떄 예외 처리
         isJump = true;
 
         if (Distance < 1)
             Distance = 1;
 
-        switch(Distance)
+        switch (Distance)
         {
             case 1:
-                enemyVelocityY = -20;
-                curPlatformIdx = curPlatformIdx + 1;
+                enemyVelocityY = -21;
                 break;
             case 2:
-                enemyVelocityY = -27;
-                curPlatformIdx = curPlatformIdx + 2;
+                enemyVelocityY = -28;
                 break;
             case 3:
                 enemyVelocityY = -34;
-                curPlatformIdx = curPlatformIdx + 3;
                 break;
             default:
                 enemyVelocityY = -34;
-                curPlatformIdx = curPlatformIdx + 3;
                 break;
         }
     }
 
     protected override void PlayerTouch(PlayerController player)
     {
+        if (player.isDie == false)
+        {
+            if (player.dir.x == 0)
+                player.dir.x = 1;
+
+            bombEffect.SetActive(true);
+
+            player.isDie = true;
+            player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
+            player.playerVelocityY = -15;
+
+            //TODO: Log
+        }
 
     }
 
     protected override void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.TryGetComponent<Platform>(out var platform))
+        if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
+            if (moveY > platform.Top() && enemyVelocityY > 0)
+            {
+                moveY = platform.Top() + 0.01f;
 
+                curFloor = platform.platformLevel;
+                moveRadius = GameMgr.Instance.GameLogic.createdPlatformSaveList[curFloor];
+                enemyVelocityY = 0;
+                isJump = false;
+            }
         }
 
         base.OnCollisionEnter2D(other);

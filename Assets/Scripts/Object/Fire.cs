@@ -11,13 +11,16 @@ public class Fire : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
-        player.playerVelocityY = -15;
+        if (player.isDie == false)
+        {
+            player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
+            player.playerVelocityY = -15;
 
-        //TODO: Log
+            //TODO: Log
 
-        //TODO: Send GameEndReq
-        Debug.Log("player Die");
-        player.isDie = true;
+            //TODO: Send GameEndReq
+            Debug.Log("player Die");
+            player.isDie = true;
+        }
     }
 }

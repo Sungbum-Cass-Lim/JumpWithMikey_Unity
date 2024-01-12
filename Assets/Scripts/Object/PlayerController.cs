@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public float playerVelocityX = 0;
     public float playerVelocityY = 0;
     public Vector2 dir;
-    public bool isRun = false;
     private float moveX = 0;
     private float moveY = -3.45f;
 
@@ -83,10 +82,8 @@ public class PlayerController : MonoBehaviour
         }
         #endregion
 
-        if (dir.x != 0 && isRun == false)
+        if (dir.x != 0)
         {
-            isRun = true;
-
             playerAnimator.SetBool("MoveStart", true);
             GameMgr.Instance.GameLogic.TutorialOff();
         }
@@ -100,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isRun)
+        if (dir.x != 0)
         {
             Move();
 
@@ -121,6 +118,10 @@ public class PlayerController : MonoBehaviour
 
             //다음 올라갈 위치 선정
             playerVelocityY += this.gravity * Time.deltaTime * 50;
+
+            if (playerVelocityY > 20)
+                playerVelocityY = 20;
+
             moveY -= playerVelocityY * Time.deltaTime;
         }
     }

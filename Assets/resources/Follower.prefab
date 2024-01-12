@@ -194,14 +194,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9942cf42c568b844e8c75e79dd6ab576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnPos: {x: 0, y: 0}
   enemySpriter: {fileID: 8618151970534481210}
+  bombEffect: {fileID: 7732617654963067307}
   moveRadius: 
   curPlatformIdx: 0
   dir: {x: 0, y: 0}
   enemyVelocityX: 0
   enemyVelocityY: 0
-  platformDistance: 0
+  maxDistance: 0
+  playerDistance: 0
   isJump: 0
+  curFloor: 0
 --- !u!1 &7732617654963067307
 GameObject:
   m_ObjectHideFlags: 0
