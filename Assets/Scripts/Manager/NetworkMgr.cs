@@ -19,7 +19,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     {
 #if !UNITY_EDITOR && UNITY_WEBGL
 #if USE_WEBGL_LOCAL_CASS
-        address = "ws://172.17.176.1:4001/jumpwithmikey/socket.io"; //본점
+        address = "ws://127.0.0.1:3001/jumpwithmikey/socket.io"; //본점
 #elif USE_WEBGL_DEV
         address = "https://dev-tournament.playdapp.com/jumpwithmikey/socket.io";
 #elif USE_WEBGL_QA

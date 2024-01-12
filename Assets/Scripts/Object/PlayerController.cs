@@ -76,9 +76,12 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
         {
             isDie = true;
-            EditorApplication.isPaused = true;
-
             //TODO: Log
+        }
+
+        if(isDie == true)
+        {
+            Time.timeScale = 0;
         }
         #endregion
 

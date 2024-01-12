@@ -601,7 +601,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    WebGL: USE_WEBGL_DEV
+    WebGL: USE_WEBGL_LOCAL_CASS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
