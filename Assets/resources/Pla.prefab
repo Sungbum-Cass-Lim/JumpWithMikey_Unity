@@ -193,6 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e0ebd5454df0d24e973c4da1a9aca93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPos: {x: 0, y: 0.58}
+  spawnPos: {x: 0, y: 0.6}
   addScore: 100
   MagenetForce: 4.5

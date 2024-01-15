@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class PlatformObj : MonoBehaviour
 {
-    public Vector2 SpawnPos;
+    public Platform parentPlatform { private set; get; }
+    public Vector2 spawnPos;
 
-    public virtual void Initialize()
+#nullable enable
+    public virtual void Initialize(Platform? platform)
     {
-        
+        if (platform != null)
+        {
+            parentPlatform = platform;
+            Debug.Log(parentPlatform);
+        }
     }
 
     protected virtual void PlayerTouch(PlayerController player)

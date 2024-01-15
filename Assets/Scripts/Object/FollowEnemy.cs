@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,15 +50,17 @@ public class FollowEnemy : PlatformObj
             isJump = true;
             enemyVelocityY = 0;
 
-            moveX = Random.Range(-3.15f, 3.15f);
+            moveX = UnityEngine.Random.Range(-3.15f, 3.15f);
             moveY = GameConfig.INTERVAL_Y * (GameMgr.Instance.player.passFloor - 2) + GameConfig.MIN_Y + 0.8f;
 
             curFloor = GameMgr.Instance.player.passFloor - 2;
         }
     }
 
-    public override void Initialize()
+    public override void Initialize(Platform? platform)
     {
+        base.Initialize(platform);
+
         moveX = transform.position.x;
         moveY = transform.position.y;
     }
@@ -146,7 +149,16 @@ public class FollowEnemy : PlatformObj
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
             player.playerVelocityY = -15;
 
-            //TODO: Log
+            //FollowerEnemy Touch To Player Log
+            var gameLog = new GameLog();
+            gameLog.a = "d";
+            gameLog.s = GameMgr.Instance.gameScore;
+            gameLog.uf = player.curFloor;
+            gameLog.of = curFloor;
+            gameLog.oi = curPlatformIdx;
+            gameLog.n = "JM002";
+            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+            GameLogic.LogPush(gameLog);
         }
 
     }

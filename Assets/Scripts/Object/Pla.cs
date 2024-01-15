@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,22 +25,32 @@ public class Pla : PlatformObj
         }
     }
 
-    public override void Initialize()
+    public override void Initialize(Platform? platform)
     {
-        transform.localPosition = SpawnPos;
+        base.Initialize(platform);
+
+        transform.localPosition = spawnPos;
         isEat = false;
         distance = 0;
     }
 
     protected override void PlayerTouch(PlayerController player)
     {
-        //TODO: Change ObjPool
-
         isEat = true;
 
         GameMgr.Instance.gameScore += 100;
+
+        //Player Touch To Pla
+        var gameLog = new GameLog();
+        gameLog.a = "cp";
+        gameLog.s = 100;
+        gameLog.uf = player.curFloor;
+        gameLog.of = parentPlatform.platformLevel;
+        gameLog.oi = parentPlatform.platformIdx;
+        gameLog.n = "";
+        gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+        GameLogic.LogPush(gameLog);
+
         gameObject.SetActive(false);
     }
-
-    //TODO: Log
 }

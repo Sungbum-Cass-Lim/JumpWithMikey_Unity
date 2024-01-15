@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameLogic : MonoBehaviour
 {
+    public static int logCount = 0;
+    public static GameLog[] gameLogArray = new GameLog[5000];
+
     [Header("UI")]
     public GameObject titleUi;
     public GameObject gameUi;
@@ -88,7 +91,7 @@ public class GameLogic : MonoBehaviour
         follower.curFloor = 0;
         follower.maxDistance = 1;
 
-        follower.Initialize();
+        follower.Initialize(null);
         follower.gameObject.SetActive(false);
         followerEnemyList.Add(follower);
     }
@@ -96,5 +99,16 @@ public class GameLogic : MonoBehaviour
     public void TutorialOff()
     {
         tutorial.gameObject.SetActive(false);
+    }
+
+    public static void LogPush(GameLog log)
+    {
+        if (logCount < gameLogArray.Length)
+        {
+            gameLogArray[logCount] = log;
+            logCount++;
+        }
+
+        //TODO:  예외처리
     }
 }

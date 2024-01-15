@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,8 +36,10 @@ public class Enemy : PlatformObj
         }
     }
 
-    public override void Initialize()
+    public override void Initialize(Platform? platform)
     {
+        base.Initialize(platform);
+
         isDie = false;
         transform.eulerAngles = Vector3.zero;
     }
@@ -93,31 +96,67 @@ public class Enemy : PlatformObj
 
             GameMgr.Instance.gameScore += 100;
 
-            //TODO: Log
+            //Player Kill To Enemy
+            var gameLog = new GameLog();
+            gameLog.a = "k";
+            gameLog.s = 100;
+            gameLog.uf = player.curFloor;
+            gameLog.of = parentPlatform.platformIdx;
+            gameLog.oi = curPlatformIdx;
+            if (CharacterMgr.Instance.isTank && player.jumpCount < 1)
+            {
+                gameLog.n = "mikeyStatus = 0";
+            }
+            else
+            {
+                gameLog.n = "mikeyStatus = 1";
+            }
+            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+            GameLogic.LogPush(gameLog);
         }
 
         else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && isDie == false && player.jumpCount != 0)
         {
+            Debug.Log("player Die");
+            player.isDie = true;
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
             player.playerVelocityY = -15;
 
-            //TODO: Log
+            //Enemy Touch To Player
+            var gameLog = new GameLog();
+            gameLog.a = "d";
+            gameLog.s = GameMgr.Instance.gameScore;
+            gameLog.uf = player.curFloor;
+            gameLog.of = parentPlatform.platformIdx;
+            gameLog.oi = curPlatformIdx;
+            gameLog.n = "JM001";
+            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+            GameLogic.LogPush(gameLog);
 
             //TODO: Send GameEndReq
-            Debug.Log("player Die");
-            player.isDie = true;
+           
         }
 
         else if (player.jumpCount == 0 && isDie == false)
         {
+            Debug.Log("player Die");
+            player.isDie = true;
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
             player.playerVelocityY = -15;
 
-            //TODO: Log
+            //Enemy Touch To Player
+            var gameLog = new GameLog();
+            gameLog.a = "d";
+            gameLog.s = GameMgr.Instance.gameScore;
+            gameLog.uf = player.curFloor;
+            gameLog.of = parentPlatform.platformIdx;
+            gameLog.oi = curPlatformIdx;
+            gameLog.n = "JM001";
+            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+            GameLogic.LogPush(gameLog);
 
             //TODO: Send GameEndReq
-            Debug.Log("player Die");
-            player.isDie = true;
+
         }
     }
 }

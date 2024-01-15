@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     [Header("Floor")]
     public int curFloor = 0;
     public int passFloor = 0;
+    public int curPlatformIdx = 0;
 
     private void Start()
     {
@@ -76,10 +77,19 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
         {
             isDie = true;
-            //TODO: Log
+
+            var gameLog = new GameLog();
+            gameLog.a = "d";
+            gameLog.s = GameMgr.Instance.gameScore;
+            gameLog.uf = curFloor;
+            gameLog.of = 0;
+            gameLog.oi = curPlatformIdx;
+            gameLog.n = "JM003";
+            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+            GameLogic.LogPush(gameLog);
         }
 
-        if(isDie == true)
+        if (isDie == true)
         {
             Time.timeScale = 0;
         }
@@ -194,7 +204,18 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
-            //TODO: Log
+            if (dir.x != 0 && curPlatformIdx != platform.platformIdx)
+            {
+                var bumpReqDto = new BumpUpReqDto();
+
+                bumpReqDto.floor = platform.platformLevel;
+                bumpReqDto.platformTop = platform.Top();
+                bumpReqDto.posX = transform.position.x;
+                bumpReqDto.posY = transform.position.y;
+                bumpReqDto.score = GameMgr.Instance.gameScore;
+
+                NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
+            }
         }
     }
 
@@ -202,6 +223,19 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
+            if (dir.x != 0 && curPlatformIdx != platform.platformIdx)
+            {
+                var bumpReqDto = new BumpUpReqDto();
+
+                bumpReqDto.floor = platform.platformLevel;
+                bumpReqDto.platformTop = platform.Top();
+                bumpReqDto.posX = transform.position.x;
+                bumpReqDto.posY = transform.position.y;
+                bumpReqDto.score = GameMgr.Instance.gameScore;
+
+                NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
+            }
+
             if (transform.position.y > platform.Top() && passFloor < platform.platformLevel)
                 passFloor = platform.platformLevel;
 
@@ -214,7 +248,8 @@ public class PlayerController : MonoBehaviour
 
                 if (curFloor < platform.platformLevel)
                 {
-                    GameMgr.Instance.gameScore += (platform.platformLevel - curFloor) * 10;
+                    var score = (platform.platformLevel - curFloor) * 10;
+                    GameMgr.Instance.gameScore += score;
 
                     ClimbReqDto climbReqDto = new();
 
@@ -222,10 +257,20 @@ public class PlayerController : MonoBehaviour
                     climbReqDto.floor = platform.platformLevel;
                     climbReqDto.score = GameMgr.Instance.gameScore;
 
+                    curPlatformIdx = platform.platformIdx;
                     curFloor = platform.platformLevel;
+
                     NetworkMgr.Instance.RequestClimb(climbReqDto);
 
-                    //TODO: Log
+                    var gameLog = new GameLog();
+                    gameLog.a = "c";
+                    gameLog.s = score;
+                    gameLog.uf = platform.platformLevel;
+                    gameLog.of = 0;
+                    gameLog.oi = platform.platformIdx;
+                    gameLog.n = "";
+                    gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+                    GameLogic.LogPush(gameLog);
                 }
             }
         }

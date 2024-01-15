@@ -45,11 +45,14 @@ public static class Extension
     //}
     #endregion
 
-    #region SocketIo_Extention
     public static void EmitCallBack<T>(this Socket socket, Action<T> CallBack, string eventName, params object[] args)
     {
         socket.ExpectAcknowledgement(CallBack).Emit(eventName, args);
     }
-    #endregion
+
+    public static long GetUnixTimeStamp(this DateTime dateTime)
+    {
+        return ((DateTimeOffset)dateTime).ToUnixTimeSeconds();
+    }
 }
 

@@ -88,7 +88,7 @@ public class PlatformGenerator : MonoBehaviour
                 {
                     //Enemy Spawn
                     var enemy = ObjectPoolMgr.Instance.Load<Enemy>(PoolObjectType.Object, "Enemy");
-                    enemy.Initialize();
+                    enemy.Initialize(createdPlatform);
 
                     enemy.enemyVelocityX = 1.0f;
                     enemy.enemyVelocityY = 14;
@@ -115,7 +115,7 @@ public class PlatformGenerator : MonoBehaviour
 
                     createdPlatform.curObjStack.Push(vending);
                     vending.transform.SetParent(createdPlatform.transform);
-                    vending.Initialize();
+                    vending.Initialize(null);
                 }
 
                 //Can
@@ -138,7 +138,7 @@ public class PlatformGenerator : MonoBehaviour
 
                     createdPlatform.curObjStack.Push(can);
                     can.transform.SetParent(createdPlatform.transform);
-                    can.Initialize();
+                    can.Initialize(null);
                 }
 
                 //ÇÃ·§Æû Init
@@ -148,21 +148,21 @@ public class PlatformGenerator : MonoBehaviour
                         Pla pla = ObjectPoolMgr.Instance.Load<Pla>(PoolObjectType.Object, "Pla");
                         createdPlatform.curObjStack.Push(pla);
                         pla.transform.SetParent(createdPlatform.transform);
-                        pla.Initialize();
+                        pla.Initialize(createdPlatform);
                         break;
 
                     case 16:
                         Item item = ObjectPoolMgr.Instance.Load<Item>(PoolObjectType.Object, "Item");
                         createdPlatform.curObjStack.Push(item);
                         item.transform.SetParent(createdPlatform.transform);
-                        item.Initialize();
+                        item.Initialize(createdPlatform);
                         break;
 
                     case 24:
                         Fire fire = ObjectPoolMgr.Instance.Load<Fire>(PoolObjectType.Object, "Fire");
                         createdPlatform.curObjStack.Push(fire);
                         fire.transform.SetParent(createdPlatform.transform);
-                        fire.Initialize();
+                        fire.Initialize(createdPlatform);
                         break;
                 }
 

@@ -5,9 +5,9 @@ using UnityEngine;
 public class BumpUpReqDto : BaseReqDto
 {
     public int floor;
-    public int posX;
-    public int posY;
-    public int platformTop;
+    public float posX;
+    public float posY;
+    public float platformTop;
     public int score;
 }
 

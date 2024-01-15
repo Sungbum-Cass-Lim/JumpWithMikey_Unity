@@ -83,7 +83,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         serverManager.Socket.On<string>("dead", (res) =>
         {
-
+            Debug.Log(res);
         });
 
         serverManager.Socket.On("onWhiteList", () =>
@@ -121,6 +121,11 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             foreach (var arr in climbResDto.platforms)
                 GameMgr.Instance.platforms.Enqueue(arr);
 
+            if(GameMgr.Instance.platforms.Count < 10)
+            {
+                //TODO: Get More Platform
+            }
+
             GameMgr.Instance.GameLogic.platformGererate();
         }
     }
@@ -156,7 +161,13 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     {
         Send("renderCat", data);
     }
+    #endregion
 
+    #region BumpFloor Communication
+    public void RequestBumpFloor(BumpUpReqDto data)
+    {
+        Send("bumpFloor", data);
+    }
     #endregion
 
     #region End Communication
@@ -206,6 +217,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         //Debug.Log($"[Send : {message}] => " + jsonData);
         serverSocket.Emit(message, jsonData);
     }
+
     private void Send<T>(string message, BaseReqDto data, Action<T> callBack)
     {
         UserInfo user = UserManager.Instance.userInfo;

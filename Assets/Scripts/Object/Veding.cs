@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Veding : PlatformObj
 {
-    public override void Initialize()
+    public override void Initialize(Platform platform)
     {
-        transform.localPosition = SpawnPos;
+        base.Initialize(platform);
+
+        transform.localPosition = spawnPos;
     }
 }
