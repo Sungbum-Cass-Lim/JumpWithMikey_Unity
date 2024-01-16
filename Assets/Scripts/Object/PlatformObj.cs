@@ -13,7 +13,6 @@ public class PlatformObj : MonoBehaviour
         if (platform != null)
         {
             parentPlatform = platform;
-            Debug.Log(parentPlatform);
         }
     }
 
@@ -22,10 +21,13 @@ public class PlatformObj : MonoBehaviour
 
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.TryGetComponent<PlayerController>(out var player))
         {
+            if (player.isDie == true)
+                return;
+
             PlayerTouch(player);
         }
     }

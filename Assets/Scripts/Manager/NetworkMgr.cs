@@ -152,7 +152,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         //Debug.Log($"[Recv : Climb] => {res}");
         var gameExpiredResDto = JsonConvert.DeserializeObject<GameExpiredResDto>(res);
 
-        CharacterMgr.Instance.Initialize();
+        CharacterMgr.Instance.Reset();
     }
     #endregion
 
@@ -178,7 +178,19 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
     public void RequestEndGame(GameEndReqDto data)
     {
-        Send<string>("EndGame", data, ResponseEndGame);
+        UserInfo user = UserManager.Instance.userInfo;
+
+        data.uid = user.uid;
+        data.tid = user.tid;
+        data.gameId = user.gameId;
+        data.pid = user.pid;
+        data.token = user.token;
+
+        var jsonData = JsonConvert.SerializeObject(data);
+
+        Debug.Log($"[Send : EndGame] => " + jsonData);
+
+        Send<string>("end", data, ResponseEndGame);
     }
     private void ResponseEndGame(string res)
     {
@@ -204,6 +216,9 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
     private void Send(string message, BaseReqDto data)
     {
+        if (serverSocket == null)
+            return;
+
         UserInfo user = UserManager.Instance.userInfo;
 
         data.uid = user.uid;
@@ -220,6 +235,9 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
     private void Send<T>(string message, BaseReqDto data, Action<T> callBack)
     {
+        if (serverSocket == null)
+            return;
+
         UserInfo user = UserManager.Instance.userInfo;
 
         data.uid = user.uid;

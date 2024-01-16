@@ -383,13 +383,17 @@ MonoBehaviour:
   - {fileID: 22100000, guid: 9874f28412cb36347a05c00a69b5fe82, type: 2}
   - {fileID: 22100000, guid: 8e26a1479052aa04aa692ce71cae4718, type: 2}
   rigidbody2D: {fileID: 2535993200455101188}
+  boxCollider2D: {fileID: 480031461607975769}
   playerVelocityX: 0
   playerVelocityY: 0
   dir: {x: 0, y: 0}
   rotationForce: 850
   curRotation: 0
   isJump: 0
+  jumpCount: 0
   curFloor: 0
+  passFloor: 0
+  curPlatformIdx: 0
 --- !u!61 &480031461607975769
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -419,7 +423,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -445,12 +449,12 @@ Rigidbody2D:
   m_GameObject: {fileID: 8461166639609061753}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -458,9 +462,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1001 &4263766867693942508
 PrefabInstance:

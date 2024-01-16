@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -83,7 +85,7 @@ public class GameLogic : MonoBehaviour
     {
         FollowEnemy follower = ObjectPoolMgr.Instance.Load<FollowEnemy>(PoolObjectType.Object, "Follower");
 
-        follower.transform.position = new Vector2(Random.Range(-3.15f, 3.15f), posY);
+        follower.transform.position = new Vector2(UnityEngine.Random.Range(-3.15f, 3.15f), posY);
         follower.dir.x = 1;
         follower.enemyVelocityX = 5.5f;
         follower.moveY = posY;
@@ -110,5 +112,15 @@ public class GameLogic : MonoBehaviour
         }
 
         //TODO:  예외처리
+    }
+
+    public static void PlayerDie()
+    {
+        var gameEndReqDto = new GameEndReqDto();
+        gameEndReqDto.score = GameMgr.Instance.gameScore;
+
+        gameEndReqDto.gameLog = new GameLog[logCount];
+        Array.Copy(gameLogArray, gameEndReqDto.gameLog, logCount);
+        NetworkMgr.Instance.RequestEndGame(gameEndReqDto);
     }
 }

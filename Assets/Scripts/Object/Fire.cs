@@ -32,8 +32,7 @@ public class Fire : PlatformObj
             gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
             GameLogic.LogPush(gameLog);
 
-            //TODO: Send GameEndReq
-
+            GameLogic.PlayerDie();
         }
     }
 }

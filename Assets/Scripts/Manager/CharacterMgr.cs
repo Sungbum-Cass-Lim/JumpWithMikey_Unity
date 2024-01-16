@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,21 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
         this.name = "standard";
 
         GameMgr.Instance.player.CharacterAnimChange(0);
+    }
+
+    public void Reset()
+    {
+        Initialize();
+
+        var gameLog = new GameLog();
+        gameLog.a = "exbj";
+        gameLog.s = 0;
+        gameLog.uf = GameMgr.Instance.player.curFloor;
+        gameLog.of = 0;
+        gameLog.oi = GameMgr.Instance.player.curPlatformIdx;
+        gameLog.n = name;
+        gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+        GameLogic.LogPush(gameLog);
     }
 
     public void SetCharacter(GameGetItemResDto gameGetItemResDto, float duration)
@@ -63,6 +79,16 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
                 break;
         }
         GameMgr.Instance.player.CharacterAnimChange(type);
+
+        var gameLog = new GameLog();
+        gameLog.a = "bj";
+        gameLog.s = 0;
+        gameLog.uf = GameMgr.Instance.player.curFloor;
+        gameLog.of = 0;
+        gameLog.oi = GameMgr.Instance.player.curPlatformIdx;
+        gameLog.n = name;
+        gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+        GameLogic.LogPush(gameLog);
     }
 
 }

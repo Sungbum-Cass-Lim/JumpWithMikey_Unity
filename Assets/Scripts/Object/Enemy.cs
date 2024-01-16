@@ -101,7 +101,7 @@ public class Enemy : PlatformObj
             gameLog.a = "k";
             gameLog.s = 100;
             gameLog.uf = player.curFloor;
-            gameLog.of = parentPlatform.platformIdx;
+            gameLog.of = parentPlatform.platformLevel;
             gameLog.oi = curPlatformIdx;
             if (CharacterMgr.Instance.isTank && player.jumpCount < 1)
             {
@@ -127,14 +127,13 @@ public class Enemy : PlatformObj
             gameLog.a = "d";
             gameLog.s = GameMgr.Instance.gameScore;
             gameLog.uf = player.curFloor;
-            gameLog.of = parentPlatform.platformIdx;
+            gameLog.of = parentPlatform.platformLevel;
             gameLog.oi = curPlatformIdx;
             gameLog.n = "JM001";
             gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
             GameLogic.LogPush(gameLog);
 
-            //TODO: Send GameEndReq
-           
+            GameLogic.PlayerDie();
         }
 
         else if (player.jumpCount == 0 && isDie == false)
@@ -149,14 +148,13 @@ public class Enemy : PlatformObj
             gameLog.a = "d";
             gameLog.s = GameMgr.Instance.gameScore;
             gameLog.uf = player.curFloor;
-            gameLog.of = parentPlatform.platformIdx;
+            gameLog.of = parentPlatform.platformLevel;
             gameLog.oi = curPlatformIdx;
             gameLog.n = "JM001";
             gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
             GameLogic.LogPush(gameLog);
 
-            //TODO: Send GameEndReq
-
+            GameLogic.PlayerDie();
         }
     }
 }

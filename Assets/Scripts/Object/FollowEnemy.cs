@@ -159,15 +159,17 @@ public class FollowEnemy : PlatformObj
             gameLog.n = "JM002";
             gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
             GameLogic.LogPush(gameLog);
+
+            GameLogic.PlayerDie();
         }
 
     }
 
-    protected override void OnCollisionEnter2D(Collision2D other)
+    protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
-            if (moveY > platform.Top() && enemyVelocityY > 0)
+            if (moveY + 0.5f > platform.Top() && enemyVelocityY > 0)
             {
                 moveY = platform.Top() + 0.01f;
 
@@ -178,6 +180,6 @@ public class FollowEnemy : PlatformObj
             }
         }
 
-        base.OnCollisionEnter2D(other);
+        base.OnTriggerEnter2D(other);
     }
 }

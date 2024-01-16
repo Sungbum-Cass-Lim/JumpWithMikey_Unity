@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -64,8 +65,6 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     public void GameOver()
     {
         gameState = GameState.GameEnd;
-        gameScore = 0;
-        player = null;
 
         muteBackup = SoundMgr.isMute;
 

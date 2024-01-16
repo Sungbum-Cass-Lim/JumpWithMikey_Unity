@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public Animator playerAnimator;
     public List<AnimatorOverrideController> playerCharacterList;
     public Rigidbody2D rigidbody2D;
+    public BoxCollider2D boxCollider2D;
 
     [Header("Move")]
     public float playerVelocityX = 0;
@@ -74,7 +73,7 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         #region PlayerMissingFeet
-        if (transform.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
+        if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
         {
             isDie = true;
 
@@ -87,35 +86,18 @@ public class PlayerController : MonoBehaviour
             gameLog.n = "JM003";
             gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
             GameLogic.LogPush(gameLog);
-        }
 
-        if (isDie == true)
-        {
-            Time.timeScale = 0;
+            GameLogic.PlayerDie();
         }
         #endregion
 
-        if (dir.x != 0)
-        {
-            playerAnimator.SetBool("MoveStart", true);
-            GameMgr.Instance.GameLogic.TutorialOff();
-        }
-
-        if (CharacterMgr.Instance.changeTime > 0)
-        {
-            CharacterMgr.Instance.changeTime -= Time.deltaTime;
-            ChangeTimeText.text = Mathf.Ceil(CharacterMgr.Instance.changeTime).ToString();
-        }
-    }
-
-    private void FixedUpdate()
-    {
+        #region PlayerMove
         if (dir.x != 0)
         {
             Move();
 
             //실제 위치 이동 부분
-            rigidbody2D.MovePosition(new Vector2(moveX, moveY));
+            transform.position = new Vector2(moveX, moveY);
 
             if (curRotation < 0 && isDie == false)
             {
@@ -136,6 +118,21 @@ public class PlayerController : MonoBehaviour
                 playerVelocityY = 20;
 
             moveY -= playerVelocityY * Time.deltaTime;
+        }
+
+        //Debug.Log(transform.position);
+        #endregion
+
+        if (dir.x != 0)
+        {
+            playerAnimator.SetBool("MoveStart", true);
+            GameMgr.Instance.GameLogic.TutorialOff();
+        }
+
+        if (CharacterMgr.Instance.changeTime > 0)
+        {
+            CharacterMgr.Instance.changeTime -= Time.deltaTime;
+            ChangeTimeText.text = Mathf.Ceil(CharacterMgr.Instance.changeTime).ToString();
         }
     }
 
@@ -176,11 +173,11 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         //플레이어 화면 벗어날 시 이동
-        if (transform.position.x <= -3.5f)
+        if (rigidbody2D.position.x <= -3.5f)
         {
             moveX = 3.5f;
         }
-        else if (transform.position.x >= 3.5f)
+        else if (rigidbody2D.position.x >= 3.5f)
         {
             moveX = -3.5f;
         }
@@ -200,37 +197,18 @@ public class PlayerController : MonoBehaviour
         ChangeEffect.SetActive(false);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
-            if (dir.x != 0 && curPlatformIdx != platform.platformIdx)
+            if (dir.x != 0 && curPlatformIdx != platform.platformIdx && isDie == false)
             {
                 var bumpReqDto = new BumpUpReqDto();
 
                 bumpReqDto.floor = platform.platformLevel;
                 bumpReqDto.platformTop = platform.Top();
-                bumpReqDto.posX = transform.position.x;
-                bumpReqDto.posY = transform.position.y;
-                bumpReqDto.score = GameMgr.Instance.gameScore;
-
-                NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
-            }
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D other)
-    {
-        if (other.gameObject.TryGetComponent<Platform>(out var platform))
-        {
-            if (dir.x != 0 && curPlatformIdx != platform.platformIdx)
-            {
-                var bumpReqDto = new BumpUpReqDto();
-
-                bumpReqDto.floor = platform.platformLevel;
-                bumpReqDto.platformTop = platform.Top();
-                bumpReqDto.posX = transform.position.x;
-                bumpReqDto.posY = transform.position.y;
+                bumpReqDto.posX = rigidbody2D.position.x;
+                bumpReqDto.posY = rigidbody2D.position.y;
                 bumpReqDto.score = GameMgr.Instance.gameScore;
 
                 NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
@@ -239,7 +217,7 @@ public class PlayerController : MonoBehaviour
             if (transform.position.y > platform.Top() && passFloor < platform.platformLevel)
                 passFloor = platform.platformLevel;
 
-            if (moveY > platform.Top() && playerVelocityY > 0)
+            if (moveY + 0.35f > platform.Top() && playerVelocityY > 0 && isDie == false)
             {
                 moveY = platform.Top() + 0.01f;
 
@@ -272,6 +250,36 @@ public class PlayerController : MonoBehaviour
                     gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
                     GameLogic.LogPush(gameLog);
                 }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent<Platform>(out var platform))
+        {
+            if (dir.x != 0 && curPlatformIdx != platform.platformIdx && isDie == false)
+            {
+                var bumpReqDto = new BumpUpReqDto();
+
+                bumpReqDto.floor = platform.platformLevel;
+                bumpReqDto.platformTop = platform.Top();
+                bumpReqDto.posX = transform.position.x;
+                bumpReqDto.posY = transform.position.y;
+                bumpReqDto.score = GameMgr.Instance.gameScore;
+
+                NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
+            }
+
+            if (transform.position.y > platform.Top() && passFloor < platform.platformLevel)
+                passFloor = platform.platformLevel;
+
+            if (moveY + 0.35f > platform.Top() && playerVelocityY > 0 && isDie == false)
+            {
+                moveY = platform.Top() + 0.01f;
+
+                playerVelocityY = 0;
+                jumpCount = 0;
             }
         }
     }

@@ -139,7 +139,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9942cf42c568b844e8c75e79dd6ab576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPos: {x: 0, y: 0}
+  spawnPos: {x: 0, y: 0}
   enemySpriter: {fileID: 8618151970534481210}
   bombEffect: {fileID: 7732617654963067307}
   moveRadius: 
