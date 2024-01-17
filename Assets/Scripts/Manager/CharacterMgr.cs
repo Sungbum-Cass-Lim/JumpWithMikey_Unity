@@ -47,6 +47,8 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
 
     public void SetCharacter(GameGetItemResDto gameGetItemResDto, float duration)
     {
+        SoundMgr.Instance.PlayFx(SoundType.getcha);
+
         name = gameGetItemResDto.effect.name;
         velocityX = gameGetItemResDto.effect.velocityX;
         velocityY = gameGetItemResDto.effect.velocityY;

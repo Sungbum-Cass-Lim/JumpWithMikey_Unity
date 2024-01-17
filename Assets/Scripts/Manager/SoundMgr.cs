@@ -4,17 +4,13 @@ using UnityEngine;
 
 public enum SoundType
 {
-    BGM = 0,
-    block_break = 1,
-    block_knock = 2,
-    character_voice_01 = 3,
-    character_voice_02 = 4,
-    chatacter_death = 5,
-    fever_voice_01 = 6,
-    fever_voice_02 = 7,
-    fever_voice_03 = 8,
-    item = 9,
-    wall_knock = 10,
+    bgm_jumpmikey_intro = 0,
+    bgm_jumpmikey_ingame = 1,
+    coin = 2,
+    enemy_die = 3,
+    getcha = 4,
+    hero_jump = 5,
+    gameover = 6,
 }
 
 public class SoundMgr : SingletonComponentBase<SoundMgr>
@@ -138,16 +134,13 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     {
         switch (type)
         {
-            case SoundType.BGM: return "BGM";
-            case SoundType.block_break: return "block_break";
-            case SoundType.block_knock: return "block_knock";
-            case SoundType.character_voice_01: return "character_voice_01";
-            case SoundType.chatacter_death: return "chatacter_death";
-            case SoundType.fever_voice_01: return "fever_voice_01";
-            case SoundType.fever_voice_02: return "fever_voice_02";
-            case SoundType.fever_voice_03: return "fever_voice_03";
-            case SoundType.item: return "item";
-            case SoundType.wall_knock: return "wall_knock";
+            case SoundType.bgm_jumpmikey_intro: return "bgm_jumpmikey_intro";
+            case SoundType.bgm_jumpmikey_ingame: return "bgm_jumpmikey_ingame";
+            case SoundType.coin: return "coin";
+            case SoundType.enemy_die: return "enemy_die";
+            case SoundType.getcha: return "getcha";
+            case SoundType.hero_jump: return "hero_jump";
+            case SoundType.gameover: return "gameover";
             default: return string.Empty;
         }
     }

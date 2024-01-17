@@ -57,6 +57,7 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     public void GameStart()
     {
         gameState = GameState.Game;
+        SoundMgr.Instance.ChangeBgm(SoundType.bgm_jumpmikey_ingame);
         player = ObjectPoolMgr.Instance.Load<PlayerController>(PoolObjectType.player, "player");
 
         GameLogic.Initialize(player);
@@ -68,6 +69,6 @@ public class GameMgr : SingletonComponentBase<GameMgr>
 
         muteBackup = SoundMgr.isMute;
 
-        SoundMgr.Instance.SetMute(true);
+        //SoundMgr.Instance.SetMute(true);
     }
 }

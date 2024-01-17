@@ -84,15 +84,15 @@ public class Enemy : PlatformObj
     {
         if ((player.transform.position.y > transform.position.y && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
         {
-            player.playerVelocityY = CharacterMgr.Instance.velocityY;
+            SoundMgr.Instance.PlayFx(SoundType.enemy_die);
+
+            player.playerVelocityY = CharacterMgr.Instance.velocityY * 0.73f;
             player.jumpCount = 1;
             player.curRotation = 0;
 
             isDie = true;
             enemyVelocityX *= 1.5f;
             moveRadius = new int[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-
-            transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * dir.x;
 
             GameMgr.Instance.gameScore += 100;
 
@@ -115,8 +115,10 @@ public class Enemy : PlatformObj
             GameLogic.LogPush(gameLog);
         }
 
-        else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && isDie == false && player.jumpCount != 0)
+        else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && player.jumpCount != 0)
         {
+            SoundMgr.Instance.PlayFx(SoundType.gameover);
+
             Debug.Log("player Die");
             player.isDie = true;
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
@@ -136,8 +138,10 @@ public class Enemy : PlatformObj
             GameLogic.PlayerDie();
         }
 
-        else if (player.jumpCount == 0 && isDie == false)
+        else
         {
+            SoundMgr.Instance.PlayFx(SoundType.gameover);
+
             Debug.Log("player Die");
             player.isDie = true;
             player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;

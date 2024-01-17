@@ -12,7 +12,6 @@ public class SoundObj : MonoBehaviour
     [SerializeField]
     private AudioClip clip;
     private float audioLength;
-    private float freetime = 0.2f;
     private bool loop;
 
     public void Init(AudioClip clip, bool isLoop = false)

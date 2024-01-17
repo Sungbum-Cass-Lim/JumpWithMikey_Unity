@@ -17,7 +17,7 @@ public static class Builder
         Production
     }
 
-    public static readonly string appName = "SpaceCrush";
+    public static readonly string appName = "JumpWithMikey";
 
     public static string ReleaseFilePath
     {

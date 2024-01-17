@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
         #region PlayerMissingFeet
         if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
         {
+            SoundMgr.Instance.PlayFx(SoundType.gameover);
+
             isDie = true;
 
             var gameLog = new GameLog();
@@ -160,7 +162,9 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpCount < CharacterMgr.Instance.jump && isDie == false)
         {
-            playerVelocityY = CharacterMgr.Instance.velocityY * 0.75f;
+            SoundMgr.Instance.PlayFx(SoundType.hero_jump);
+
+            playerVelocityY = CharacterMgr.Instance.velocityY * 0.73f;
 
             transform.eulerAngles = Vector3.zero;
             curRotation = -rotationForce * Time.deltaTime;

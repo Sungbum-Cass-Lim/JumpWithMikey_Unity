@@ -36,6 +36,8 @@ public class Pla : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
+        SoundMgr.Instance.PlayFx(SoundType.coin);
+
         isEat = true;
 
         GameMgr.Instance.gameScore += 100;

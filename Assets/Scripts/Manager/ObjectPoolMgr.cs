@@ -74,7 +74,7 @@ public class ObjectPoolMgr : SingletonComponentBase<ObjectPoolMgr>
 
         IncreasePoolObjectCache(1, PoolObjectType.player, "player");
 
-        //IncreasePoolObjectCache(10, PoolObjectType.Effect, "SoundComponent");
+        IncreasePoolObjectCache(10, PoolObjectType.Effect, "SoundComponent");
     }
 
     public void IncreasePoolObjectCache(int _cacheCount, PoolObjectType _poolType, string _fileName)

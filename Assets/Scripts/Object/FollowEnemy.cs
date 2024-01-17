@@ -138,31 +138,29 @@ public class FollowEnemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        if (player.isDie == false)
-        {
-            if (player.dir.x == 0)
-                player.dir.x = 1;
+        SoundMgr.Instance.PlayFx(SoundType.gameover);
 
-            bombEffect.SetActive(true);
+        if (player.dir.x == 0)
+            player.dir.x = 1;
 
-            player.isDie = true;
-            player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
-            player.playerVelocityY = -15;
+        bombEffect.SetActive(true);
 
-            //FollowerEnemy Touch To Player Log
-            var gameLog = new GameLog();
-            gameLog.a = "d";
-            gameLog.s = GameMgr.Instance.gameScore;
-            gameLog.uf = player.curFloor;
-            gameLog.of = curFloor;
-            gameLog.oi = curPlatformIdx;
-            gameLog.n = "JM002";
-            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
-            GameLogic.LogPush(gameLog);
+        player.isDie = true;
+        player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;
+        player.playerVelocityY = -15;
 
-            GameLogic.PlayerDie();
-        }
+        //FollowerEnemy Touch To Player Log
+        var gameLog = new GameLog();
+        gameLog.a = "d";
+        gameLog.s = GameMgr.Instance.gameScore;
+        gameLog.uf = player.curFloor;
+        gameLog.of = curFloor;
+        gameLog.oi = curPlatformIdx;
+        gameLog.n = "JM002";
+        gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+        GameLogic.LogPush(gameLog);
 
+        GameLogic.PlayerDie();
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)
