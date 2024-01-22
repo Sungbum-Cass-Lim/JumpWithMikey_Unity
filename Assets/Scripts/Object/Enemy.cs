@@ -118,7 +118,7 @@ public class Enemy : PlatformObj
 
         else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && player.jumpCount != 0)
         {
-            SoundMgr.Instance.PlayFx(SoundType.gameover);
+            SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
             Debug.Log("player Die");
             player.isDie = true;
@@ -141,7 +141,7 @@ public class Enemy : PlatformObj
 
         else
         {
-            SoundMgr.Instance.PlayFx(SoundType.gameover);
+            SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
             Debug.Log("player Die");
             player.isDie = true;

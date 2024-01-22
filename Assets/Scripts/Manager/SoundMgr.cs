@@ -116,6 +116,26 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
         PlayFx(SoundTypeToName(fxType), isLoop);
     }
 
+    public void PlayGameOver(SoundType fxType, bool isLoop = false)
+    {
+        SoundObj fxObj = ObjectPoolMgr.Instance.Load<SoundObj>(PoolObjectType.Effect, "SoundComponent");
+        Debug.Log("GameOver");
+
+        if (fxDictionay.TryGetValue(SoundTypeToName(fxType), out var clip))
+        {
+            fxObj.Init(clip, isLoop);
+            fxObj.Play(0.5f);
+        }
+    }
+
+    public void StopFx(AudioSource source)
+    {
+        if (!playSoundList.Contains(source))
+            return;
+
+        playSoundList.Remove(source);
+    }
+
     public void SetMute(bool show)
     {
         isMute = show;

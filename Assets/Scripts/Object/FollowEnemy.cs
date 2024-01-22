@@ -138,7 +138,7 @@ public class FollowEnemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        SoundMgr.Instance.PlayFx(SoundType.gameover);
+        SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
         if (player.dir.x == 0)
             player.dir.x = 1;

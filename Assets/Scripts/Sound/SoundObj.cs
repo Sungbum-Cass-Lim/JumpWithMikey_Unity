@@ -22,17 +22,19 @@ public class SoundObj : MonoBehaviour
         stopCallBack = Stop;
     }
 
-    public void Play()
+    public void Play(float minVolum = 0.0f, float maxVolum = 0.5f)
     {
         audioSource.clip = clip;
         audioSource.loop = loop;
-        audioSource.volume = SoundMgr.isMute == true ? 0.0f : 0.5f;
+        audioSource.volume = SoundMgr.isMute == true ? minVolum : maxVolum;
 
         audioSource.Play();
     }
 
     public void Stop()
     {
+        SoundMgr.Instance.StopFx(audioSource);
+
         audioSource.Stop();
         ObjectPoolMgr.Instance.ReleasePool(gameObject);
     }

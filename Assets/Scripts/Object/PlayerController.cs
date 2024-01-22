@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         #region PlayerMissingFeet
         if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
         {
-            SoundMgr.Instance.PlayFx(SoundType.gameover);
+            SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
             isDie = true;
 

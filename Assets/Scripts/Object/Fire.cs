@@ -14,7 +14,7 @@ public class Fire : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        SoundMgr.Instance.PlayFx(SoundType.gameover);
+        SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
         Debug.Log("player Die");
         player.isDie = true;
