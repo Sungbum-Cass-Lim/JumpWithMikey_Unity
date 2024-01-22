@@ -69,6 +69,6 @@ public class GameMgr : SingletonComponentBase<GameMgr>
 
         muteBackup = SoundMgr.isMute;
 
-        //SoundMgr.Instance.SetMute(true);
+        SoundMgr.Instance.SetMute(true);
     }
 }

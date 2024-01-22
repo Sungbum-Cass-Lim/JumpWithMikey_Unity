@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TournamentSDKUnity;
 
 public class TitleLogic : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class TitleLogic : MonoBehaviour
     public Shadow gameStartShadow;
 
     public GameObject touchBlock;
+    public GameObject NoneTouch;
 
     private Color startTextColor;
 
@@ -26,17 +28,29 @@ public class TitleLogic : MonoBehaviour
 
         startTextColor = gameStartText.color;
         startTextColorCorutine = StartCoroutine(StartTextColor());
+
     }
 
-    private void Start()
+    void SetNotiChannel(string notify)
     {
-        WebNetworkMgr.Instance.InitTargetGame(() =>
+        if(notify.Contains("mute"))
         {
-            Debug.Log("Loding False");
-            WebNetworkMgr.Instance.SetLoading(false);
+            MuteData muteData = JsonUtility.FromJson<MuteData>(notify);
+            Debug.Log($"Mute = {muteData.mute}");
 
-            CloudGenerate();
-        });
+            SoundMgr.Instance.SetMute(muteData.mute);
+        }
+        else
+        {
+            Debug.Log($"No Case = {notify}");
+        }
+    }
+
+
+    private async void Start()
+    {
+        var init = await TournamentUnitySDK.Instance.Init("dev", "57859d9618ab477eade234ef9da1a05d", SetNotiChannel);
+        CloudGenerate();       
     }
 
     IEnumerator StartTextColor()
@@ -84,14 +98,23 @@ public class TitleLogic : MonoBehaviour
     }
 
     //Web Token Request
-    public void InitWebToken()
+    public async void InitWebToken()
     {
+        NoneTouch.SetActive(true);
         touchBlock.SetActive(true);
 
         gameStartText.color = startTextColor;
 
         Debug.Log("GetToken");
-        WebNetworkMgr.Instance.InitNetwork(OnToken);
+        try
+        {
+            var token = await TournamentUnitySDK.Instance.RequestToken();
+            UserManager.Instance.OnUser(token);
+            OnToken(true);
+        } catch(TournamentErrorException ex)
+        {
+            Debug.LogWarning($"[GetToken Error] :: {ex.code}, {ex.message}");
+        }   
     }
 
     //Web Token Response
@@ -109,5 +132,6 @@ public class TitleLogic : MonoBehaviour
     {
         GameStartReqDto gameStartReqDto = new();
         NetworkMgr.Instance.RequestStartGame(gameStartReqDto);
+        NoneTouch.SetActive(false);
     }
 }

@@ -21,7 +21,7 @@ public class Enemy : PlatformObj
 
     private float gravity = 1.8f;
 
-    private void FixedUpdate()
+    private void Update()
     {
         //실제 위치 이동 부분
         Move();
@@ -36,7 +36,7 @@ public class Enemy : PlatformObj
         }
     }
 
-    public override void Initialize(Platform? platform)
+    public override void Initialize(Platform platform)
     {
         base.Initialize(platform);
 
@@ -82,13 +82,14 @@ public class Enemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        if ((player.transform.position.y > transform.position.y && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
+        if ((player.transform.position.y > transform.position.y - 0.2f && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
         {
             SoundMgr.Instance.PlayFx(SoundType.enemy_die);
 
             player.playerVelocityY = CharacterMgr.Instance.velocityY * 0.73f;
             player.jumpCount = 1;
-            player.curRotation = 0;
+
+            player.curRotation = -361;
 
             isDie = true;
             enemyVelocityX *= 1.5f;

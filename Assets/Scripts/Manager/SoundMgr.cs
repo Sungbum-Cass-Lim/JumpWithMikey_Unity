@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class MuteData
+{
+    public bool mute;
+}
+
 public enum SoundType
 {
     bgm_jumpmikey_intro = 0,
@@ -31,7 +36,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
     public SoundObj SoundComponent;
 
-    protected override void InitializeSingleton(){}
+    protected override void InitializeSingleton() { }
     private void Awake()
     {
         BgmInit();
@@ -99,12 +104,13 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
         playSoundList.Add(fxObj.audioSource);
 
-        if(fxDictionay.TryGetValue (fxName, out var clip))
+        if (fxDictionay.TryGetValue(fxName, out var clip))
         {
             fxObj.Init(clip, isLoop);
             fxObj.Play();
         }
     }
+
     public void PlayFx(SoundType fxType, bool isLoop = false)
     {
         PlayFx(SoundTypeToName(fxType), isLoop);
@@ -116,7 +122,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
         if (show)
         {
-            foreach(var audio in playSoundList)
+            foreach (var audio in playSoundList)
             {
                 audio.volume = 0.0f;
             }

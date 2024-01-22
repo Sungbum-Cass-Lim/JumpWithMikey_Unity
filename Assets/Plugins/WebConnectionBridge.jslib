@@ -1,69 +1,57 @@
 var jslib = {
   $Data: {
     ORIGIN: [],
+    onResponsePost : null,
   },
+
+  
 
   initialize: function (origin) {
     if (UTF8ToString(origin) === "dev") {
       Data.ORIGIN = [
         "https://tournament.dev.playdapp.com",
+        "http://localhost:3005",
         "http://localhost:3000",
       ];
     }
      else if (UTF8ToString(origin) === "qa") {
         Data.ORIGIN = [
           "https://tournament.qa.playdapp.com",
+          "http://localhost:3005",
           "http://localhost:3000",
         ];
     }
      else if (UTF8ToString(origin) === "prod") {
         Data.ORIGIN = [
           "https://tournament.playdapp.com",
-          "https://tournament.staging.playdapp.com",
         ];
     }
-    console.log("init", Data.ORIGIN);
-    console.log("unityInstance", unityInstance);
-
     window.addEventListener("message", unityInstance.Module.WebEventListener);
   },
-
-  // jwt token request
-  RequestToken: function () {
-    unityInstance.Module.SendPostMessage(
-      unityInstance.Module.GetPostMessage("requestToken", null)
-    );
-  },
   
-  RequestTarget: function () {
-    unityInstance.Module.SendPostMessage(
-      unityInstance.Module.GetPostMessage("requestTarget", null)
-    );
-  },
+  SendFrontPostMessage: function(postMessage) {
 
-  Loading: function (show) {
-    unityInstance.Module.SendPostMessage(
-      unityInstance.Module.GetPostMessage("loading", { show: show })
-    );
-  },
-
-  RequestMain: function (show) {
-    unityInstance.Module.SendPostMessage(
-      unityInstance.Module.GetPostMessage("requestMain", null)
-    );
-  },
-  
-  SendFrontError: function(data) {
-     unityInstance.Module.SendPostMessage(
-          unityInstance.Module.GetPostMessage("error", JSON.parse(UTF8ToString(data)))
-    );
-  },
-
- SendEndGame: function(_score) {
-    unityInstance.Module.SendPostMessage(
-      unityInstance.Module.GetPostMessage("sendEndGame", {score:_score})
-    );
-  },
+       console.log("postMessage :: " , UTF8ToString(postMessage));
+       unityInstance.Module.SendPostMessage(UTF8ToString(postMessage));
+       
+       if(UTF8ToString(postMessage).includes("loading") || UTF8ToString(postMessage).includes("sendStartGame") || UTF8ToString(postMessage).includes("sendEndGame")) {
+          
+          var dataMessage = JSON.stringify({isSuccess : true});
+             
+          var encoder = new TextEncoder();
+          var strBuffer = encoder.encode(dataMessage + String.fromCharCode(0));
+          var strPtr = _malloc(strBuffer.length);
+          HEAP8.set(strBuffer, strPtr);
+          
+          Module['dynCall_vi']( Data.onResponsePost, [strPtr]);		
+          _free(strPtr);          
+       }
+    },
+    
+    
+     PostOnMessage: function(callBack) {
+       Data.onResponsePost = callBack;     
+    },
 };
 
 autoAddDeps(jslib, "$Data");

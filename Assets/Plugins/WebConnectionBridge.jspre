@@ -1,68 +1,34 @@
 Module.WebEventListener = function (e) {
-  //console.log("WebEventListener", e.origin, Data.ORIGIN);
-  if (Data.ORIGIN.indexOf(e.origin) === -1 && Data.ORIGIN.indexOf("") === -1) 
-  {
-    return;
+  
+  if (Data.ORIGIN.indexOf(e.origin) === -1 && Data.ORIGIN.indexOf("") === -1) {
+  return;
   }
 
   let message = null;
 
   // json 형식이 아니면 안됨
-  try 
-  {
+  try {
     message = JSON.parse(e.data);
-  } 
-  catch (error) 
-  {
+   
+  } catch (error) {
     return;
   }
-  console.log(message);
-
-  switch (message.message) 
-  {
-    case "token":
+    if(Data.onResponsePost === null || Data.onResponsePost === undefined) return;
     
-    case "onToken":
-      unityInstance.SendMessage(
-        "WebNetworkMgr",
-        "OnRequestToken",
-        JSON.stringify(message.data)
-      );
-      break;
-
-    case "onTarget":
-      unityInstance.SendMessage(
-        "WebNetworkMgr",
-        "OnRequestTarget",
-        JSON.stringify(message.data)
-      );
-      break;
-
-    case "onRestart":
-      console.log("Restart Called");
-      unityInstance.SendMessage(
-        "WebNetworkMgr",
-        "OnRequestRestart",
-      );
-      break;  
-
-    case "pause":
-      break;
-
-    case "mute":
-      unityInstance.SendMessage(
-        "WebNetworkMgr",
-        "OnRequestMute",
-        JSON.stringify(message.data)
-      );
-      break;
-  }
+    var dataMessage = JSON.stringify(message.data)
+    console.log('[client receive ] :: ', dataMessage);
+    var encoder = new TextEncoder();
+    var strBuffer = encoder.encode(dataMessage + String.fromCharCode(0));
+    var strPtr = _malloc(strBuffer.length);
+    HEAP8.set(strBuffer, strPtr);
+    
+    Module['dynCall_vi']( Data.onResponsePost, [strPtr]);		
+    _free(strPtr);
 };
 
 Module.SendPostMessage = function (data) {
-  const stringData = JSON.stringify(data);
-  console.log("[Send Message] ", stringData);
-  window.parent.postMessage(stringData, "*");
+  console.log("[Send Message] ", data);
+  window.parent.postMessage(data, "*");
 };
 
 // postMessage object return

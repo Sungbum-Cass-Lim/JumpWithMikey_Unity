@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Fire : PlatformObj
 {
-    public override void Initialize(Platform? platform)
+    public override void Initialize(Platform platform)
     {
         base.Initialize(platform);
 
@@ -28,7 +28,7 @@ public class Fire : PlatformObj
         gameLog.uf = player.curFloor;
         gameLog.of = parentPlatform.platformLevel;
         gameLog.oi = parentPlatform.platformIdx;
-        gameLog.n = "";
+        gameLog.n = "JM004";
         gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
         GameLogic.LogPush(gameLog);
 

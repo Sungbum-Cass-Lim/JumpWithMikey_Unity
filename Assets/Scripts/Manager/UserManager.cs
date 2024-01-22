@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TournamentSDKUnity;
 
 [System.Serializable]
 public class UserInfo
@@ -18,8 +19,15 @@ public class UserManager : SingletonComponentBase<UserManager>
 
     protected override void InitializeSingleton(){}
 
-    public void OnUser(UserInfo user)
+    public void OnUser(ResponseToken token)
     {
-        userInfo = user;   
+        userInfo = new UserInfo();
+        userInfo.uid = token.uid;
+        userInfo.pid = token.pid;
+        userInfo.tid = token.tid;
+        userInfo.gameId = token.gameId;
+        userInfo.token = token.token;
     }
+
+
 }

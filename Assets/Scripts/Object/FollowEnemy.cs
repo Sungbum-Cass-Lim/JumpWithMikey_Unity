@@ -27,7 +27,7 @@ public class FollowEnemy : PlatformObj
     [Header("Floor")]
     public int curFloor = 0;
 
-    private void FixedUpdate()
+    private void Update()
     {
         //실제 위치 이동 부분
         Move();
@@ -57,7 +57,7 @@ public class FollowEnemy : PlatformObj
         }
     }
 
-    public override void Initialize(Platform? platform)
+    public override void Initialize(Platform platform)
     {
         base.Initialize(platform);
 
@@ -167,7 +167,7 @@ public class FollowEnemy : PlatformObj
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
-            if (moveY + 0.5f > platform.Top() && enemyVelocityY > 0)
+            if (moveY + 0.35f > platform.Top() && enemyVelocityY > 0)
             {
                 moveY = platform.Top() + 0.01f;
 

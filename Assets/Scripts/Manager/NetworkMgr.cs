@@ -5,6 +5,8 @@ using UnityEngine;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Transports;
 using Newtonsoft.Json;
+using TournamentSDKUnity;
+
 
 public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 {
@@ -97,16 +99,19 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     {
         Send<string>("start", data, ResponseStartGame);
     }
-    private void ResponseStartGame(string res)
+    private async void ResponseStartGame(string res)
     {
         //Debug.Log($"[Recv : StartGame] => {res}");
         var gameStartRes = JsonConvert.DeserializeObject<GameStartResDto>(res);
-
+#if !UNITY_EDITOR
+        await TournamentUnitySDK.Instance.NotifyGameStart();
+        UserManager.Instance.userInfo.pid = gameStartRes.pid;
+#endif
         GameMgr.Instance.Initialize(gameStartRes.height, gameStartRes.platforms, gameStartRes.map, gameStartRes.result, gameStartRes.renderCondition);
     }
-    #endregion
+#endregion
 
-    #region Climb Communication
+#region Climb Communication
     public void RequestClimb(ClimbReqDto data)
     {
         Send<string>("climb", data, ResponseClimb);
@@ -129,9 +134,9 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             GameMgr.Instance.GameLogic.platformGererate();
         }
     }
-    #endregion
+#endregion
 
-    #region Item Communication
+#region Item Communication
     public void RequestItem(GameGetItemReqDto data)
     {
         Send("collectItem", data);
@@ -154,23 +159,23 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         CharacterMgr.Instance.Reset();
     }
-    #endregion
+#endregion
 
-    #region renderCat Communication
+#region renderCat Communication
     public void RequestRenderCat(GameRenderCatReqDto data)
     {
         Send("renderCat", data);
     }
-    #endregion
+#endregion
 
-    #region BumpFloor Communication
+#region BumpFloor Communication
     public void RequestBumpFloor(BumpUpReqDto data)
     {
         Send("bumpFloor", data);
     }
-    #endregion
+#endregion
 
-    #region End Communication
+#region End Communication
     private void OnDead(string res)
     {
 
@@ -192,13 +197,13 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         Send<string>("end", data, ResponseEndGame);
     }
-    private void ResponseEndGame(string res)
+    private async void ResponseEndGame(string res)
     {
         Debug.Log($"[Recv : EndGame] => {res}");
         var endRes = JsonUtility.FromJson<GameEndResDto>(res);
 
 #if !UNITY_EDITOR && UNITY_WEBGL
-        WebNetworkMgr.SendEndGame(endRes.score);
+        await TournamentUnitySDK.Instance.NotifyGameEnd(endRes.score);
 #endif
 
         if (endRes.result)
@@ -212,7 +217,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             serverManager = null;
         }
     }
-    #endregion
+#endregion
 
     private void Send(string message, BaseReqDto data)
     {

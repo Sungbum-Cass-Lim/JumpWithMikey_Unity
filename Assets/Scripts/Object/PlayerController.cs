@@ -121,8 +121,6 @@ public class PlayerController : MonoBehaviour
 
             moveY -= playerVelocityY * Time.deltaTime;
         }
-
-        //Debug.Log(transform.position);
         #endregion
 
         if (dir.x != 0)
@@ -187,7 +185,7 @@ public class PlayerController : MonoBehaviour
         }
 
         playerVelocityX = (640 / (100 * CharacterMgr.Instance.velocityX)) * dir.x;
-        moveX += playerVelocityX * Time.deltaTime * 0.65f;
+        moveX += playerVelocityX * Time.deltaTime * 0.6f;
     }
 
     private IEnumerator ChangeEffectActive()
@@ -218,10 +216,10 @@ public class PlayerController : MonoBehaviour
                 NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
             }
 
-            if (transform.position.y > platform.Top() && passFloor < platform.platformLevel)
+            if (moveY > platform.Top() && passFloor < platform.platformLevel)
                 passFloor = platform.platformLevel;
 
-            if (moveY + 0.35f > platform.Top() && playerVelocityY > 0 && isDie == false)
+            if (transform.position.y + 0.25f > platform.Top() && playerVelocityY > 0 && isDie == false)
             {
                 moveY = platform.Top() + 0.01f;
 
@@ -275,15 +273,42 @@ public class PlayerController : MonoBehaviour
                 NetworkMgr.Instance.RequestBumpFloor(bumpReqDto);
             }
 
-            if (transform.position.y > platform.Top() && passFloor < platform.platformLevel)
+            if (moveY > platform.Top() && passFloor < platform.platformLevel)
                 passFloor = platform.platformLevel;
 
-            if (moveY + 0.35f > platform.Top() && playerVelocityY > 0 && isDie == false)
+            if (transform.position.y + 0.25f > platform.Top() && playerVelocityY > 0 && isDie == false)
             {
                 moveY = platform.Top() + 0.01f;
 
                 playerVelocityY = 0;
                 jumpCount = 0;
+
+                if (curFloor < platform.platformLevel)
+                {
+                    var score = (platform.platformLevel - curFloor) * 10;
+                    GameMgr.Instance.gameScore += score;
+
+                    ClimbReqDto climbReqDto = new();
+
+                    climbReqDto.floorsUp = platform.platformLevel - curFloor;
+                    climbReqDto.floor = platform.platformLevel;
+                    climbReqDto.score = GameMgr.Instance.gameScore;
+
+                    curPlatformIdx = platform.platformIdx;
+                    curFloor = platform.platformLevel;
+
+                    NetworkMgr.Instance.RequestClimb(climbReqDto);
+
+                    var gameLog = new GameLog();
+                    gameLog.a = "c";
+                    gameLog.s = score;
+                    gameLog.uf = platform.platformLevel;
+                    gameLog.of = 0;
+                    gameLog.oi = platform.platformIdx;
+                    gameLog.n = "";
+                    gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+                    GameLogic.LogPush(gameLog);
+                }
             }
         }
     }
