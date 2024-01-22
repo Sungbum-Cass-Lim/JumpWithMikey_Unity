@@ -87,7 +87,7 @@ public class GameLogic : MonoBehaviour
 
         follower.transform.position = new Vector2(UnityEngine.Random.Range(-3.15f, 3.15f), posY);
         follower.dir.x = 1;
-        follower.enemyVelocityX = 5.5f;
+        follower.enemyVelocityX = 8.5f;
         follower.moveY = posY;
         follower.moveRadius = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         follower.curFloor = 0;

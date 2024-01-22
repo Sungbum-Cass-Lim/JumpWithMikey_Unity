@@ -18,6 +18,7 @@ public class Enemy : PlatformObj
     public float moveX { set; get; }
     public float moveY { set; get; }
     private bool isRotate = false;
+    private bool isStay = false;
 
     private float gravity = 1.8f;
 
@@ -56,6 +57,9 @@ public class Enemy : PlatformObj
             curPlatformIdx = (int)Mathf.Floor((transform.position.x + 3.15f) / 0.7f);
             enemySpriter.flipX = true;
         }
+
+        if (curPlatformIdx > 1 && curPlatformIdx < 9 && moveRadius[curPlatformIdx + 1] == 0 && moveRadius[curPlatformIdx - 1] == 0)
+            return;
 
         var nextPlatformIdx = curPlatformIdx + (int)dir.x;
 
@@ -116,6 +120,7 @@ public class Enemy : PlatformObj
             GameLogic.LogPush(gameLog);
         }
 
+        #if !UNITY_EDITOR
         else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && player.jumpCount != 0)
         {
             SoundMgr.Instance.PlayGameOver(SoundType.gameover);
@@ -161,5 +166,6 @@ public class Enemy : PlatformObj
 
             GameLogic.PlayerDie();
         }
+        #endif
     }
 }

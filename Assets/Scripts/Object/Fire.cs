@@ -14,7 +14,8 @@ public class Fire : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        SoundMgr.Instance.PlayGameOver(SoundType.gameover);
+#if !UNITY_EDITOR
+        SoundMgr.Instance.PlayFx(SoundType.gameover);
 
         Debug.Log("player Die");
         player.isDie = true;
@@ -33,5 +34,6 @@ public class Fire : PlatformObj
         GameLogic.LogPush(gameLog);
 
         GameLogic.PlayerDie();
+#endif
     }
 }

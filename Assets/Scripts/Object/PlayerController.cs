@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
         #region PlayerMissingFeet
         if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
         {
+#if !UNITY_EDITOR
             SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
             isDie = true;
@@ -90,7 +91,9 @@ public class PlayerController : MonoBehaviour
             GameLogic.LogPush(gameLog);
 
             GameLogic.PlayerDie();
+#endif
         }
+
         #endregion
 
         #region PlayerMove

@@ -138,6 +138,7 @@ public class FollowEnemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
+        #if !UNITY_EDITOR
         SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
         if (player.dir.x == 0)
@@ -161,6 +162,7 @@ public class FollowEnemy : PlatformObj
         GameLogic.LogPush(gameLog);
 
         GameLogic.PlayerDie();
+        #endif
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)
