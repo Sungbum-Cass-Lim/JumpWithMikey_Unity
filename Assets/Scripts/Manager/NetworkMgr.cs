@@ -16,6 +16,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
     private Socket serverSocket;
 
     private Action connetCallBack;
+    private Action getPlatformCallBack;
 
     protected override void InitializeSingleton()
     {
@@ -94,7 +95,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         });
     }
 
-#region Start Communication
+    #region Start Communication
     public void RequestStartGame(GameStartReqDto data)
     {
         Send<string>("start", data, ResponseStartGame);
@@ -109,9 +110,9 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 #endif
         GameMgr.Instance.Initialize(gameStartRes.height, gameStartRes.platforms, gameStartRes.map, gameStartRes.result, gameStartRes.renderCondition);
     }
-#endregion
+    #endregion
 
-#region Climb Communication
+    #region Climb Communication
     public void RequestClimb(ClimbReqDto data)
     {
         Send<string>("climb", data, ResponseClimb);
@@ -126,17 +127,40 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             foreach (var arr in climbResDto.platforms)
                 GameMgr.Instance.platforms.Enqueue(arr);
 
-            if(GameMgr.Instance.platforms.Count < 10)
+            if (GameMgr.Instance.platforms.Count < 10)
             {
                 //TODO: Get More Platform
             }
 
-            GameMgr.Instance.GameLogic.platformGererate();
+            GameMgr.Instance.height = climbResDto.height;
+            GameMgr.Instance.GameLogic.platformGenerate();
         }
     }
-#endregion
+    #endregion
 
-#region Item Communication
+    #region GetPlatform
+    public void RequestGetPlatform(GamePlatformReqDto data, Action action)
+    {
+        Send<string>("platform", data, ResponseGetPlatform);
+        getPlatformCallBack = action;
+    }
+
+    private void ResponseGetPlatform(string res)
+    {
+        var getPlatformRes = JsonConvert.DeserializeObject<GamePlatformResDto>(res);
+
+        foreach (var arr in getPlatformRes.platforms)
+            GameMgr.Instance.platforms.Enqueue(arr);
+
+        Debug.Log($"GetPlatform : {GameMgr.Instance.platforms.Count}");
+        getPlatformCallBack.Invoke();
+
+        GameMgr.Instance.height = getPlatformRes.height;
+        GameMgr.Instance.GameLogic.platformGenerate();
+    }
+    #endregion
+
+    #region Item Communication
     public void RequestItem(GameGetItemReqDto data)
     {
         Send("collectItem", data);
@@ -159,23 +183,23 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         CharacterMgr.Instance.Reset();
     }
-#endregion
+    #endregion
 
-#region renderCat Communication
+    #region renderCat Communication
     public void RequestRenderCat(GameRenderCatReqDto data)
     {
         Send("renderCat", data);
     }
-#endregion
+    #endregion
 
-#region BumpFloor Communication
+    #region BumpFloor Communication
     public void RequestBumpFloor(BumpUpReqDto data)
     {
         Send("bumpFloor", data);
     }
-#endregion
+    #endregion
 
-#region End Communication
+    #region End Communication
     private void OnDead(string res)
     {
         var deadRes = JsonUtility.FromJson<GameDeadResDto>(res);
@@ -238,7 +262,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             serverManager = null;
         }
     }
-#endregion
+    #endregion
 
     private void Send(string message, BaseReqDto data)
     {

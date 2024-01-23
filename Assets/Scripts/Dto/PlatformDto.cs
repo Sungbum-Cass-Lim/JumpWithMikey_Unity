@@ -10,7 +10,7 @@ public class GamePlatformReqDto : BaseReqDto
 
 public class GamePlatformResDto : BaseResDto
 {
-    public int HEIGHT;
-    public int[] platforms;
+    public int height;
+    public int[][] platforms;
     public int[] enemyMap;
 }

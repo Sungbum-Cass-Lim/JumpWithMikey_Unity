@@ -26,7 +26,9 @@ public class GameLogic : MonoBehaviour
     public bool isFollowerSpawn = false;
     public float waitingTime = 0.0f;
 
-    public List<int[]> createdPlatformSaveList = new List<int[]>();
+    public bool isEmptyPlatform = false;
+
+    public List<int[]> platformDataList = new List<int[]>();
     public List<FollowEnemy> followerEnemyList = new List<FollowEnemy>();
 
     private void Start()
@@ -41,6 +43,7 @@ public class GameLogic : MonoBehaviour
 
     private void Update()
     {
+        //TODO: Text 점수 바뀔 때만 호출하도록 교체 필요
         scoreText.text = $"{GameMgr.Instance.gameScore}";
 
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, cameraY, -10), cameraSpeed * Time.deltaTime);
@@ -63,6 +66,24 @@ public class GameLogic : MonoBehaviour
                 }
             }
         }
+
+        if(GameMgr.Instance.gameState == GameState.Game && player.isDie != true && GameMgr.Instance.height <= 10)
+        {
+            if (isEmptyPlatform != false)
+                return;
+            isEmptyPlatform = true;
+
+            var platformReq = new GamePlatformReqDto();
+
+            if (player.curFloor == 0)
+                platformReq.floor = 1;
+            else
+                platformReq.floor = player.curFloor;
+
+            platformReq.score = GameMgr.Instance.gameScore;
+
+            NetworkMgr.Instance.RequestGetPlatform(platformReq, ()=>{ isEmptyPlatform = false; });
+        }
     }
 
     public void Initialize(PlayerController player)
@@ -73,10 +94,10 @@ public class GameLogic : MonoBehaviour
         titleUi.SetActive(false);
         gameUi.SetActive(true);
 
-        platformGererate();
+        platformGenerate();
     }
 
-    public void platformGererate()
+    public void platformGenerate()
     {
         platformGenerator.Initialize();
     }
@@ -97,7 +118,7 @@ public class GameLogic : MonoBehaviour
         follower.gameObject.SetActive(false);
         followerEnemyList.Add(follower);
     }
-
+    
     public void TutorialOff()
     {
         tutorial.gameObject.SetActive(false);

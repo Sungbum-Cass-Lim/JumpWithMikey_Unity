@@ -23,7 +23,7 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     public GameLogic GameLogic = null;
     public TitleLogic TitleLogic = null;
 
-    public int height { private set; get; }
+    public int height { set; get; }
     public Queue<int[]> platforms = new Queue<int[]>();
     public int[] enemyMap { private set; get; }
     public bool result { private set; get; }

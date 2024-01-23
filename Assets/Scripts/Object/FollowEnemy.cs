@@ -174,7 +174,7 @@ public class FollowEnemy : PlatformObj
                 moveY = platform.Top() + 0.01f;
 
                 curFloor = platform.platformLevel;
-                moveRadius = GameMgr.Instance.GameLogic.createdPlatformSaveList[curFloor];
+                moveRadius = GameMgr.Instance.GameLogic.platformDataList[curFloor];
                 enemyVelocityY = 0;
                 isJump = false;
             }
