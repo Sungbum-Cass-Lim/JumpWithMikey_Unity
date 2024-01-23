@@ -41,16 +41,9 @@ namespace TournamentSDKUnity
         [MonoPInvokeCallback(typeof(Action<string>))]
         public static void DelegateOnMessageEvent(string msg)
         {
-            Debug.Log($"DelegateOnMessageEvent : {msg}");
-
-            if (msg.Contains("mute"))
+            if (msg.Contains("mute") || msg.Contains(("onRestart")))
             {
                 Debug.Log("Call Mute :: " + msg);
-                TournamentUnitySDK.Instance.getNotiChannel()?.Invoke(msg);
-            }
-            else if (msg.Contains("onRestart"))
-            {
-                Debug.Log("Call onRestart :: " + msg);
                 TournamentUnitySDK.Instance.getNotiChannel()?.Invoke(msg);
             }
             utcs.TrySetResult(msg);

@@ -5,6 +5,9 @@ using Newtonsoft.Json.Linq;
 
 namespace TournamentSDKUnity
 {
+    
+    
+    
     public class NotifyEndGame : ICommand
     {
         private string message;

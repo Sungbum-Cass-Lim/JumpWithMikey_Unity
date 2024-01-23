@@ -40,6 +40,7 @@ public class TitleLogic : MonoBehaviour
 
             SoundMgr.Instance.SetMute(muteData.mute);
         }
+
         else
         {
             Debug.Log($"No Case = {notify}");

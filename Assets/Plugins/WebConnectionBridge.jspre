@@ -5,7 +5,7 @@ Module.WebEventListener = function (e) {
   }
 
   let message = null;
-
+    
   // json 형식이 아니면 안됨
   try {
     message = JSON.parse(e.data);
@@ -13,10 +13,16 @@ Module.WebEventListener = function (e) {
   } catch (error) {
     return;
   }
+
     if(Data.onResponsePost === null || Data.onResponsePost === undefined) return;
-    
-    var dataMessage = JSON.stringify(message.data)
-    console.log('[client receive ] :: ', dataMessage);
+     var dataMessage;
+    if(message.message.includes("onRestart")) {
+      dataMessage = JSON.stringify({onRestart : true});
+    }
+    else{
+      dataMessage = JSON.stringify(message.data)
+    }
+
     var encoder = new TextEncoder();
     var strBuffer = encoder.encode(dataMessage + String.fromCharCode(0));
     var strPtr = _malloc(strBuffer.length);
@@ -27,7 +33,6 @@ Module.WebEventListener = function (e) {
 };
 
 Module.SendPostMessage = function (data) {
-  console.log("[Send Message] ", data);
   window.parent.postMessage(data, "*");
 };
 

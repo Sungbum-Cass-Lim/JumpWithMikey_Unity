@@ -11,18 +11,18 @@ public class TestScript : MonoBehaviour
     public Text cheatValue;
 
     public int cheatInt = 5;
-    
+
     private ResponseToken thisGameToken = new ResponseToken();
     private string thisGamePID = "";
 
     private string playerType;
-    
+
     // Start is called before the first frame update
     public async void Start()
     {
         cheatValue.text = cheatInt.ToString();
 
-        var init = await TournamentUnitySDK.Instance.Init("dev", "883b613684351d7aa8b7eef44d48748c", SetNotiChannel);
+        var init = await TournamentUnitySDK.Instance.Init("dev", "9bcdbe507a9611eda1eb0242ac120002", SetNotiChannel);
         taskResultTxt.text = String.Format($"response loading :: {init}");
     }
     
@@ -57,6 +57,11 @@ public class TestScript : MonoBehaviour
         taskResultTxt.text = "notify game start :: " + notify.isSuccess;
     }
     
+    public async void OnNotifyPVPGameStart()
+    {
+        var notify = await TournamentUnitySDK.Instance.NotifyGameStart(this.thisGamePID);
+        taskResultTxt.text = "notify game start :: " + notify.isSuccess;
+    }
     
     public async void OnClickEndSingleGame()
     {
@@ -64,10 +69,10 @@ public class TestScript : MonoBehaviour
         {
             var aa = await TournamentUnitySDK.Instance.SingleGameEnd(new GameEndBuilder().SetToken(thisGameToken.token)
                 .SetScore(100).SetPlayTime(600).SetCheating(0).SetRecord("").SetPid(thisGamePID));
-            Debug.Log("end aa");
+            TournamentDebug.Log("end aa");
             taskResultTxt.text = String.Format($"single game Start :: {aa.status} , {aa.message}");
-            Debug.Log(String.Format($"single game Start :: {aa.status} , {aa.message}"));
-            Debug.Log(("end bb"));
+            TournamentDebug.Log(String.Format($"single game Start :: {aa.status} , {aa.message}"));
+            TournamentDebug.Log(("end bb"));
         }
         catch (TournamentErrorException ex)
         {
@@ -80,6 +85,42 @@ public class TestScript : MonoBehaviour
         var notify = await TournamentUnitySDK.Instance.NotifyGameEnd(1000);
         taskResultTxt.text = "notify game end :: " + notify.isSuccess;
     }
+    
+    public async void OnNotifyPVPGameEnd()
+    {
+        PVPGameEndData data = new PVPGameEndData();
+
+        if (this.playerType == "host")
+        {
+            data.score = 1000;
+            data.host = new Host()
+            {
+                remainTime = 10
+            };
+        }
+        else
+        {
+            data.score = 1000;
+            data.host = new Host()
+            {
+                remainTime = 10
+            };
+            data.challenger = new Challenger()
+            {
+                oppentScore = 1000,
+                reward = 200,
+                rewardType = "COIN"
+            };
+        }
+        
+       
+        
+        
+        var notify = await TournamentUnitySDK.Instance.NotifyPVPGameEnd(data);
+        taskResultTxt.text = "notify game end :: " + notify.isSuccess;
+    }
+    
+    
 
 
     public async void OnRequetMatch()
@@ -92,7 +133,7 @@ public class TestScript : MonoBehaviour
     public async void OnClickStartPVPGame()
     {
         var gameStart = await TournamentUnitySDK.Instance.PVPGameStart(playerType);
-        Debug.Log(String.Format($"single game Start :: {gameStart.status} , {gameStart.message}"));
+        TournamentDebug.Log(String.Format($"single game Start :: {gameStart.status} , {gameStart.message}"));
         if (gameStart.status == 200)
         {
             thisGamePID = gameStart.pid;
@@ -111,10 +152,10 @@ public class TestScript : MonoBehaviour
         {
             var aa = await TournamentUnitySDK.Instance.PVPGameEnd(new GameEndBuilder().SetToken(thisGameToken.token)
                 .SetScore(100).SetPlayTime(600).SetCheating(0).SetRecord("").SetReplay("{\"replay\":[{\"wave\":1,\"hit\":0.9,\"ticks\":12345},{\"wave\":2,\"hit\":0.5,\"ticks\":13345}]}").SetPid(thisGamePID).SetPlayerType(this.playerType));
-            Debug.Log("end aa");
+            TournamentDebug.Log("end aa");
             taskResultTxt.text = String.Format($"single game Start :: {aa.status} , {aa.message}");
-            Debug.Log(String.Format($"single game Start :: {aa.status} , {aa.message}"));
-            Debug.Log(("end bb"));
+            TournamentDebug.Log(String.Format($"single game Start :: {aa.status} , {aa.message}"));
+            TournamentDebug.Log(("end bb"));
         }
         catch (TournamentErrorException ex)
         {

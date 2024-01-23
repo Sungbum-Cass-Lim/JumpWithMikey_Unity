@@ -12,6 +12,7 @@ var jslib = {
         "https://tournament.dev.playdapp.com",
         "http://localhost:3005",
         "http://localhost:3000",
+        "http://172.16.32.11:3000"
       ];
     }
      else if (UTF8ToString(origin) === "qa") {
@@ -30,8 +31,6 @@ var jslib = {
   },
   
   SendFrontPostMessage: function(postMessage) {
-
-       console.log("postMessage :: " , UTF8ToString(postMessage));
        unityInstance.Module.SendPostMessage(UTF8ToString(postMessage));
        
        if(UTF8ToString(postMessage).includes("loading") || UTF8ToString(postMessage).includes("sendStartGame") || UTF8ToString(postMessage).includes("sendEndGame")) {
