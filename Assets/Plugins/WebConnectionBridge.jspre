@@ -13,11 +13,14 @@ Module.WebEventListener = function (e) {
   } catch (error) {
     return;
   }
-
+    console.log('[message] :: ', message);
     if(Data.onResponsePost === null || Data.onResponsePost === undefined) return;
      var dataMessage;
     if(message.message.includes("onRestart")) {
       dataMessage = JSON.stringify({onRestart : true});
+    }
+    else if(message.message.includes("onStartGame")) {
+      dataMessage = JSON.stringify({isSuccess : true});
     }
     else{
       dataMessage = JSON.stringify(message.data)

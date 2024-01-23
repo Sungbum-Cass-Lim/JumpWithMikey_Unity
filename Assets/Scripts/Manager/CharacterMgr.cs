@@ -16,6 +16,18 @@ public class CharacterMgr : SingletonBase<CharacterMgr>
 
     public bool isChange { private set; get; }
 
+    public override void ResetSingleton()
+    {
+        name = null;
+        velocityX = 0;
+        velocityY = 0;
+        jump = 0;
+        isTank = false;
+        plaMagnet = 0;
+        changeTime = 0;
+        isChange = false;
+    }
+
     public void Initialize()
     {
         this.velocityX = 1;

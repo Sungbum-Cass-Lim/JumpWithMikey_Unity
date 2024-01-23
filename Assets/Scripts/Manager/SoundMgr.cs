@@ -1,12 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class MuteData
-{
-    public bool mute;
-}
-
 public enum SoundType
 {
     bgm_jumpmikey_intro = 0,
@@ -26,8 +20,8 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     public List<AudioClip> bgmClipList = new List<AudioClip>();
     public List<AudioClip> fxClipList = new List<AudioClip>();
 
-    private Dictionary<string, AudioClip> bgmDictionay = new Dictionary<string, AudioClip>();
-    private Dictionary<string, AudioClip> fxDictionay = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioClip> bgmDictionary = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioClip> fxDictionary = new Dictionary<string, AudioClip>();
 
     private Transform bgmContainer;
     private Transform fxContainer;
@@ -37,6 +31,9 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     public SoundObj SoundComponent;
 
     protected override void InitializeSingleton() { }
+
+    public override void ResetSingleton(){}
+
     private void Awake()
     {
         BgmInit();
@@ -57,7 +54,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
         foreach (var bgmClip in bgmClipList)
         {
-            bgmDictionay.Add(bgmClip.name, bgmClip);
+            bgmDictionary.Add(bgmClip.name, bgmClip);
         }
     }
     public void FxInit()
@@ -68,7 +65,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
         foreach (var fxClip in fxClipList)
         {
-            fxDictionay.Add(fxClip.name, fxClip);
+            fxDictionary.Add(fxClip.name, fxClip);
         }
     }
 
@@ -82,7 +79,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     }
     public void ChangeBgm(string bgmName)
     {
-        if (bgmDictionay.TryGetValue(bgmName, out var clip))
+        if (bgmDictionary.TryGetValue(bgmName, out var clip))
         {
             AudioSource bgm = bgmContainer.GetComponent<AudioSource>();
 
@@ -104,7 +101,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
         playSoundList.Add(fxObj.audioSource);
 
-        if (fxDictionay.TryGetValue(fxName, out var clip))
+        if (fxDictionary.TryGetValue(fxName, out var clip))
         {
             fxObj.Init(clip, isLoop);
             fxObj.Play();
@@ -121,10 +118,10 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
         SoundObj fxObj = ObjectPoolMgr.Instance.Load<SoundObj>(PoolObjectType.Effect, "SoundComponent");
         Debug.Log("GameOver");
 
-        if (fxDictionay.TryGetValue(SoundTypeToName(fxType), out var clip))
+        if (fxDictionary.TryGetValue(SoundTypeToName(fxType), out var clip))
         {
             fxObj.Init(clip, isLoop);
-            fxObj.Play(0.5f);
+            fxObj.Play();
         }
     }
 

@@ -29,31 +29,34 @@ public class FollowEnemy : PlatformObj
 
     private void Update()
     {
-        //실제 위치 이동 부분
-        Move();
-
-        transform.position = new Vector2(moveX, moveY);
-
-        if (isJump)
+        if (GameMgr.Instance.gameState != GameState.Retry)
         {
-            //다음 올라갈 위치 선정
-            moveY -= enemyVelocityY * Time.deltaTime;
-            enemyVelocityY += this.gravity * Time.deltaTime * 50;
-        }
-        else
-        {
-            FollowerJump();
-        }
+            //실제 위치 이동 부분
+            Move();
 
-        if (curFloor + 4 < GameMgr.Instance.player.passFloor)
-        {
-            isJump = true;
-            enemyVelocityY = 0;
+            transform.position = new Vector2(moveX, moveY);
 
-            moveX = UnityEngine.Random.Range(-3.15f, 3.15f);
-            moveY = GameConfig.INTERVAL_Y * (GameMgr.Instance.player.passFloor - 2) + GameConfig.MIN_Y + 0.8f;
+            if (isJump)
+            {
+                //다음 올라갈 위치 선정
+                moveY -= enemyVelocityY * Time.deltaTime;
+                enemyVelocityY += this.gravity * Time.deltaTime * 50;
+            }
+            else
+            {
+                FollowerJump();
+            }
 
-            curFloor = GameMgr.Instance.player.passFloor - 2;
+            if (curFloor + 4 < GameMgr.Instance.player.passFloor)
+            {
+                isJump = true;
+                enemyVelocityY = 0;
+
+                moveX = UnityEngine.Random.Range(-3.15f, 3.15f);
+                moveY = GameConfig.INTERVAL_Y * (GameMgr.Instance.player.passFloor - 2) + GameConfig.MIN_Y + 0.8f;
+
+                curFloor = GameMgr.Instance.player.passFloor - 2;
+            }
         }
     }
 
@@ -138,7 +141,7 @@ public class FollowEnemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
         SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
         if (player.dir.x == 0)
@@ -162,7 +165,7 @@ public class FollowEnemy : PlatformObj
         GameLogic.LogPush(gameLog);
 
         GameLogic.PlayerDie();
-        #endif
+#endif
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)

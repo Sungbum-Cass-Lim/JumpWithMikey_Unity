@@ -35,6 +35,24 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 #endif
     }
 
+    public override void ResetSingleton()
+    {
+        if(serverSocket != null && serverSocket.IsOpen == true)
+        {
+            Debug.Log(serverSocket.IsOpen);
+
+            serverSocket.Disconnect();
+            serverSocket = null;
+        }
+        if(serverManager != null &&  serverManager.State == SocketManager.States.Open)
+        {
+            Debug.Log(serverManager.State);
+
+            serverManager.Close();
+            serverManager = null;
+        }
+    }
+
     public void OnConnect(Action _connectCallBack)
     {
         Debug.Log("Connecting...");

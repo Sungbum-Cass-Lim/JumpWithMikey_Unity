@@ -47,95 +47,97 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        #region JumpKey
-        if (isJump == false)
+        if (GameMgr.Instance.gameState != GameState.Retry)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || (Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x < 0))
+
+            #region JumpKey
+            if (isJump == false)
             {
-                dir = Vector2.left;
-                playerSpriter.flipX = true;
-
-                Jump();
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= 0))
-            {
-                dir = Vector2.right;
-                playerSpriter.flipX = false;
-
-                Jump();
-            }
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftArrow) || (Input.GetMouseButtonUp(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x < 0))
-            isJump = false;
-        else if (Input.GetKeyUp(KeyCode.RightArrow) || (Input.GetMouseButtonUp(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= 0))
-            isJump = false;
-        #endregion
-
-        #region PlayerMissingFeet
-        if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
-        {
-#if !UNITY_EDITOR
-            SoundMgr.Instance.PlayGameOver(SoundType.gameover);
-
-            isDie = true;
-
-            var gameLog = new GameLog();
-            gameLog.a = "d";
-            gameLog.s = GameMgr.Instance.gameScore;
-            gameLog.uf = curFloor;
-            gameLog.of = 0;
-            gameLog.oi = curPlatformIdx;
-            gameLog.n = "JM003";
-            gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
-            GameLogic.LogPush(gameLog);
-
-            GameLogic.PlayerDie();
-#endif
-        }
-
-        #endregion
-
-        #region PlayerMove
-        if (dir.x != 0)
-        {
-            Move();
-
-            //실제 위치 이동 부분
-            transform.position = new Vector2(moveX, moveY);
-
-            if (curRotation < 0 && isDie == false)
-            {
-                curRotation -= rotationForce * Time.deltaTime;
-                playerCharacter.transform.eulerAngles = Vector3.forward * dir.x * curRotation;
-
-                if (curRotation < -360)
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || (Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x < 0))
                 {
-                    curRotation = 0;
-                    playerCharacter.transform.eulerAngles = Vector3.zero;
+                    dir = Vector2.left;
+                    playerSpriter.flipX = true;
+
+                    Jump();
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= 0))
+                {
+                    dir = Vector2.right;
+                    playerSpriter.flipX = false;
+
+                    Jump();
                 }
             }
 
-            //다음 올라갈 위치 선정
-            playerVelocityY += this.gravity * Time.deltaTime * 50;
+            if (Input.GetKeyUp(KeyCode.LeftArrow) || (Input.GetMouseButtonUp(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x < 0))
+                isJump = false;
+            else if (Input.GetKeyUp(KeyCode.RightArrow) || (Input.GetMouseButtonUp(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= 0))
+                isJump = false;
+            #endregion
 
-            if (playerVelocityY > 20)
-                playerVelocityY = 20;
+            #region PlayerMissingFeet
+            if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
+            {
+                SoundMgr.Instance.PlayGameOver(SoundType.gameover);
 
-            moveY -= playerVelocityY * Time.deltaTime;
-        }
-        #endregion
+                isDie = true;
 
-        if (dir.x != 0)
-        {
-            playerAnimator.SetBool("MoveStart", true);
-            GameMgr.Instance.GameLogic.TutorialOff();
-        }
+                var gameLog = new GameLog();
+                gameLog.a = "d";
+                gameLog.s = GameMgr.Instance.gameScore;
+                gameLog.uf = curFloor;
+                gameLog.of = 0;
+                gameLog.oi = curPlatformIdx;
+                gameLog.n = "JM003";
+                gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+                GameLogic.LogPush(gameLog);
 
-        if (CharacterMgr.Instance.changeTime > 0)
-        {
-            CharacterMgr.Instance.changeTime -= Time.deltaTime;
-            ChangeTimeText.text = Mathf.Ceil(CharacterMgr.Instance.changeTime).ToString();
+                GameLogic.PlayerDie();
+            }
+
+            #endregion
+
+            #region PlayerMove
+            if (dir.x != 0)
+            {
+                Move();
+
+                //실제 위치 이동 부분
+                transform.position = new Vector2(moveX, moveY);
+
+                if (curRotation < 0 && isDie == false)
+                {
+                    curRotation -= rotationForce * Time.deltaTime;
+                    playerCharacter.transform.eulerAngles = Vector3.forward * dir.x * curRotation;
+
+                    if (curRotation < -360)
+                    {
+                        curRotation = 0;
+                        playerCharacter.transform.eulerAngles = Vector3.zero;
+                    }
+                }
+
+                //다음 올라갈 위치 선정
+                playerVelocityY += this.gravity * Time.deltaTime * 50;
+
+                if (playerVelocityY > 20)
+                    playerVelocityY = 20;
+
+                moveY -= playerVelocityY * Time.deltaTime;
+            }
+            #endregion
+
+            if (dir.x != 0)
+            {
+                playerAnimator.SetBool("MoveStart", true);
+                GameMgr.Instance.GameLogic.TutorialOff();
+            }
+
+            if (CharacterMgr.Instance.changeTime > 0)
+            {
+                CharacterMgr.Instance.changeTime -= Time.deltaTime;
+                ChangeTimeText.text = Mathf.Ceil(CharacterMgr.Instance.changeTime).ToString();
+            }
         }
     }
 

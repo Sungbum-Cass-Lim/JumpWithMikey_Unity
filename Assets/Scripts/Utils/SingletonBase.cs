@@ -20,4 +20,6 @@ public abstract class SingletonBase<T> where T : new()
             }
         }
     }
+
+    public abstract void ResetSingleton();
 }

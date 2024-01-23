@@ -36,10 +36,9 @@ public class ObjectPoolMgr : SingletonComponentBase<ObjectPoolMgr>
 {
     private readonly PoolObjInstanceData[] poolArray = new PoolObjInstanceData[(int)PoolObjectType.End];
 
-    protected override void InitializeSingleton()
-    {
-        
-    }
+    protected override void InitializeSingleton(){}
+
+    public override void ResetSingleton(){}
 
     private void Awake()
     {

@@ -52,11 +52,11 @@ public class GameLogic : MonoBehaviour
             cameraY = player.transform.position.y + 0.1f;
         }
 
-        if(isFollowerSpawn == false && GameMgr.Instance.gameState == GameState.Game)
+        if (isFollowerSpawn == false && GameMgr.Instance.gameState == GameState.Game)
         {
             waitingTime += Time.deltaTime;
 
-            if(waitingTime > 4)
+            if (waitingTime > 4)
             {
                 isFollowerSpawn = true;
 
@@ -67,7 +67,7 @@ public class GameLogic : MonoBehaviour
             }
         }
 
-        if(GameMgr.Instance.gameState == GameState.Game && player.isDie != true && GameMgr.Instance.height <= 10)
+        if (GameMgr.Instance.gameState == GameState.Game && player.isDie != true && GameMgr.Instance.height <= 10)
         {
             if (isEmptyPlatform != false)
                 return;
@@ -82,7 +82,7 @@ public class GameLogic : MonoBehaviour
 
             platformReq.score = GameMgr.Instance.gameScore;
 
-            NetworkMgr.Instance.RequestGetPlatform(platformReq, ()=>{ isEmptyPlatform = false; });
+            NetworkMgr.Instance.RequestGetPlatform(platformReq, () => { isEmptyPlatform = false; });
         }
     }
 
@@ -118,7 +118,7 @@ public class GameLogic : MonoBehaviour
         follower.gameObject.SetActive(false);
         followerEnemyList.Add(follower);
     }
-    
+
     public void TutorialOff()
     {
         tutorial.gameObject.SetActive(false);

@@ -33,7 +33,7 @@ public abstract class SingletonComponentBase<T> : MonoBehaviour where T : MonoBe
                         instance = findGameObject.GetComponent<T>();
                 }
 
-                DontDestroyOnLoad(instance);
+                //DontDestroyOnLoad(instance);
                 return instance;
             }
         }
@@ -46,6 +46,8 @@ public abstract class SingletonComponentBase<T> : MonoBehaviour where T : MonoBe
     }
 
     protected abstract void InitializeSingleton();
+
+    public abstract void ResetSingleton();
 
     private void OnApplicationQuit()
     {

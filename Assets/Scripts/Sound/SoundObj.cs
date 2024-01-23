@@ -22,11 +22,11 @@ public class SoundObj : MonoBehaviour
         stopCallBack = Stop;
     }
 
-    public void Play(float minVolum = 0.0f, float maxVolum = 0.5f)
+    public void Play()
     {
         audioSource.clip = clip;
         audioSource.loop = loop;
-        audioSource.volume = SoundMgr.isMute == true ? minVolum : maxVolum;
+        audioSource.volume = SoundMgr.isMute == true ? 0.0f : 0.5f;
 
         audioSource.Play();
     }

@@ -23,7 +23,7 @@ public class Platform : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (GameMgr.Instance.player.curFloor - 7 > platformLevel && isRelease == false)
+        if (GameMgr.Instance.gameState != GameState.Retry && GameMgr.Instance.player.curFloor - 7 > platformLevel && isRelease == false)
         {
             isRelease = true;
 

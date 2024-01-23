@@ -19,6 +19,11 @@ public class UserManager : SingletonComponentBase<UserManager>
 
     protected override void InitializeSingleton(){}
 
+    public override void ResetSingleton()
+    {
+        userInfo = new();
+    }
+
     public void OnUser(ResponseToken token)
     {
         userInfo = new UserInfo();

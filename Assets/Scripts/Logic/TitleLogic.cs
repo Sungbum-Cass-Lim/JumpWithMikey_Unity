@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TournamentSDKUnity;
+using UnityEngine.SceneManagement;
 
 public class TitleLogic : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class TitleLogic : MonoBehaviour
 
         startTextColor = gameStartText.color;
         startTextColorCorutine = StartCoroutine(StartTextColor());
-
     }
 
     void SetNotiChannel(string notify)
@@ -41,12 +41,28 @@ public class TitleLogic : MonoBehaviour
             SoundMgr.Instance.SetMute(muteData.mute);
         }
 
+        //TODO: 초기화 로직 추가해야함
+        else if(notify.Contains("onRestart"))
+        {
+            GameLogic.logCount = 0;
+            GameLogic.gameLogArray = new GameLog[5000];
+
+            GameMgr.Instance.ResetSingleton();
+
+            UserManager.Instance.ResetSingleton();
+            ObjectPoolMgr.Instance.ResetSingleton();
+            CharacterMgr.Instance.ResetSingleton();
+            SoundMgr.Instance.ResetSingleton();
+            NetworkMgr.Instance.ResetSingleton();
+
+            SceneManager.LoadScene("GameScene");
+        }
+
         else
         {
             Debug.Log($"No Case = {notify}");
         }
     }
-
 
     private async void Start()
     {

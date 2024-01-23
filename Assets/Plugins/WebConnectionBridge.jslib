@@ -35,6 +35,8 @@ var jslib = {
        
        if(UTF8ToString(postMessage).includes("loading") || UTF8ToString(postMessage).includes("sendStartGame") || UTF8ToString(postMessage).includes("sendEndGame")) {
           
+          if(UTF8ToString(postMessage).includes("pid")) return;
+          
           var dataMessage = JSON.stringify({isSuccess : true});
              
           var encoder = new TextEncoder();

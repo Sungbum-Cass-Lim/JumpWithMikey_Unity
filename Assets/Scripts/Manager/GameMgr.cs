@@ -8,6 +8,7 @@ public enum GameState
     Title = 0,
     Game,
     GameEnd,
+    Retry,
 }
 
 public class GameMgr : SingletonComponentBase<GameMgr>
@@ -38,14 +39,31 @@ public class GameMgr : SingletonComponentBase<GameMgr>
         GameLogic = FindObjectOfType<GameLogic>();
     }
 
+    public override void ResetSingleton()
+    {
+        gameState = GameState.Retry;
+        player = null;
+        gameScore = 0;
+
+        GameLogic = null;
+        TitleLogic = null;
+
+        height = 0;
+        platforms = new();
+        enemyMap = null;
+        result = false;
+        renderCondition = 0;
+        isReceiveStart = false;
+    }
+
     //GameStartData Init
-    public void Initialize(int height, int[][]platforms, int[]enemyMap, bool result, int renderCondition)
+    public void Initialize(int height, int[][] platforms, int[] enemyMap, bool result, int renderCondition)
     {
         this.height = height;
 
-        foreach(var arr in platforms)
+        foreach (var arr in platforms)
             this.platforms.Enqueue(arr);
-        
+
         this.enemyMap = enemyMap;
         this.result = result;
         this.renderCondition = renderCondition;
