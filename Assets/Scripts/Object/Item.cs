@@ -14,8 +14,6 @@ public class Item : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        //TODO: Log
-
         GameGetItemReqDto gameGetItemReqDto = new();
         gameGetItemReqDto.score = GameMgr.Instance.gameScore;
 

@@ -43,9 +43,6 @@ public class GameLogic : MonoBehaviour
 
     private void Update()
     {
-        //TODO: Text 점수 바뀔 때만 호출하도록 교체 필요
-        scoreText.text = $"{GameMgr.Instance.gameScore}";
-
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, cameraY, -10), cameraSpeed * Time.deltaTime);
         if (player != null && player.transform.position.y > Camera.main.ScreenToWorldPoint(Vector3.up * Screen.height / 2).y + 0.45f)
         {

@@ -99,7 +99,7 @@ public class Enemy : PlatformObj
             enemyVelocityX *= 1.5f;
             moveRadius = new int[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 
-            GameMgr.Instance.gameScore += 100;
+            GameMgr.Instance.SetScore(100);
 
             //Player Kill To Enemy
             var gameLog = new GameLog();

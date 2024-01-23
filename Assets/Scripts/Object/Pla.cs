@@ -40,7 +40,7 @@ public class Pla : PlatformObj
 
         isEat = true;
 
-        GameMgr.Instance.gameScore += 100;
+        GameMgr.Instance.SetScore(100);
 
         //Player Touch To Pla
         var gameLog = new GameLog();

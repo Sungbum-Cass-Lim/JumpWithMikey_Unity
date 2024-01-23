@@ -89,4 +89,9 @@ public class GameMgr : SingletonComponentBase<GameMgr>
 
         SoundMgr.Instance.SetMute(true);
     }
+    public void SetScore(int score)
+    {
+        gameScore += score;
+        GameLogic.scoreText.text = $"{GameMgr.Instance.gameScore}";
+    }
 }

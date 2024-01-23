@@ -41,7 +41,6 @@ public class TitleLogic : MonoBehaviour
             SoundMgr.Instance.SetMute(muteData.mute);
         }
 
-        //TODO: 초기화 로직 추가해야함
         else if(notify.Contains("onRestart"))
         {
             GameLogic.logCount = 0;

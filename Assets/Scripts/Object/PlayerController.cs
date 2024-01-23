@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
                 if (curFloor < platform.platformLevel)
                 {
                     var score = (platform.platformLevel - curFloor) * 10;
-                    GameMgr.Instance.gameScore += score;
+                    GameMgr.Instance.SetScore(score);
 
                     ClimbReqDto climbReqDto = new();
 
@@ -291,7 +291,7 @@ public class PlayerController : MonoBehaviour
                 if (curFloor < platform.platformLevel)
                 {
                     var score = (platform.platformLevel - curFloor) * 10;
-                    GameMgr.Instance.gameScore += score;
+                    GameMgr.Instance.SetScore(score);
 
                     ClimbReqDto climbReqDto = new();
 

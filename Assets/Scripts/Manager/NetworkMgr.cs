@@ -145,11 +145,6 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
             foreach (var arr in climbResDto.platforms)
                 GameMgr.Instance.platforms.Enqueue(arr);
 
-            if (GameMgr.Instance.platforms.Count < 10)
-            {
-                //TODO: Get More Platform
-            }
-
             GameMgr.Instance.height = climbResDto.height;
             GameMgr.Instance.GameLogic.platformGenerate();
         }
@@ -190,8 +185,6 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         var gameGetItemResDto = JsonConvert.DeserializeObject<GameGetItemResDto>(res);
 
         CharacterMgr.Instance.SetCharacter(gameGetItemResDto, gameGetItemResDto.duration);
-
-        //TODO: Change Time
     }
 
     private void OnExpiredDuration(string res)
