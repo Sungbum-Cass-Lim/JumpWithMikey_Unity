@@ -85,7 +85,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 
         serverManager.Socket.On<string>("dead", (res) =>
         {
-            Debug.Log(res);
+            OnDead(res);
         });
 
         serverManager.Socket.On("onWhiteList", () =>
@@ -94,7 +94,7 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
         });
     }
 
-    #region Start Communication
+#region Start Communication
     public void RequestStartGame(GameStartReqDto data)
     {
         Send<string>("start", data, ResponseStartGame);
@@ -178,7 +178,28 @@ public class NetworkMgr : SingletonComponentBase<NetworkMgr>
 #region End Communication
     private void OnDead(string res)
     {
+        var deadRes = JsonUtility.FromJson<GameDeadResDto>(res);
+        Debug.Log($"GameDeadRedDto: {res}");
 
+        var gameLog = new GameLog();
+        gameLog.a = "d";
+        gameLog.s = GameMgr.Instance.gameScore;
+        gameLog.uf = GameMgr.Instance.player.curFloor;
+        if (GameMgr.Instance.player.curFloor <= 0)
+        {
+            gameLog.of = 5;
+            gameLog.oi = 0;
+        }
+        else
+        {
+            gameLog.of = GameMgr.Instance.player.curFloor;
+            gameLog.oi = GameMgr.Instance.player.curPlatformIdx;
+        }
+        gameLog.n = "JM005";
+        gameLog.unt = Extension.GetUnixTimeStamp(DateTime.UtcNow);
+        GameLogic.LogPush(gameLog);
+
+        GameLogic.PlayerDie();
     }
 
     public void RequestEndGame(GameEndReqDto data)

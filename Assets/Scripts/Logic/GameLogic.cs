@@ -36,7 +36,7 @@ public class GameLogic : MonoBehaviour
             MakeFollower(-3.6f);
         }
 
-        followerEnemyList[2].maxDistance = 3;
+        followerEnemyList[followerEnemyList.Count - 1].maxDistance = 3;
     }
 
     private void Update()
@@ -113,7 +113,6 @@ public class GameLogic : MonoBehaviour
 
         //TODO:  예외처리
     }
-
     public static void PlayerDie()
     {
         var gameEndReqDto = new GameEndReqDto();
