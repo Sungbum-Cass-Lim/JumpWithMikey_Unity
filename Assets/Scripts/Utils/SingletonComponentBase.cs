@@ -18,7 +18,7 @@ public abstract class SingletonComponentBase<T> : MonoBehaviour where T : MonoBe
                 if (null == _instance)
                 {
                     var componentName = typeof(T).ToString();
-                    var findGameObject = GameObject.Find(componentName);
+                    var findGameObject = FindObjectOfType(typeof(T));
                     if (null != findGameObject)
                     {
                         _instance = findGameObject.GetComponent<T>();
@@ -29,7 +29,7 @@ public abstract class SingletonComponentBase<T> : MonoBehaviour where T : MonoBe
                         name = "(SingletonComponent)" + componentName
                     };
                     _instance = singleton.AddComponent<T>();
-                    DontDestroyOnLoad(_instance);
+                    //DontDestroyOnLoad(_instance);
                 }
                 return _instance;
             }

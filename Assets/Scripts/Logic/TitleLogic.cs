@@ -29,6 +29,9 @@ public class TitleLogic : MonoBehaviour
 
         startTextColor = gameStartText.color;
         startTextColorCorutine = StartCoroutine(StartTextColor());
+
+        SoundMgr.Instance.SetAllMute(SoundMgr.muteBackup);
+        SoundMgr.Instance.PlayBGM(BGMType.bgm_jumpmikey_intro);
     }
 
     void SetNotiChannel(string notify)

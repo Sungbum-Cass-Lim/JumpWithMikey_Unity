@@ -22,6 +22,8 @@ public enum SFXType
 
 public class SoundMgr : SingletonComponentBase<SoundMgr>
 {
+    public static bool muteBackup = false;
+
     public bool audioMute { private set; get; }
 
     private SoundController soundController;
@@ -86,10 +88,8 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
 
     public void PlayBGM(BGMType bgmType)
     {
-        if (playBgmSound != null)
+        if (playBgmSound != null && playBgmSound.IsPlaying == true)
         {
-            Debug.Log("Bgm NotNull");
-
             playBgmSound.Stop();
             playBgmSound = null;
         }
@@ -113,6 +113,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     public void SetAllMute(bool isMute = true)
     {
         audioMute = isMute;
+        soundController.SetMuteAll(isMute);
 
         if (isMute)
         {

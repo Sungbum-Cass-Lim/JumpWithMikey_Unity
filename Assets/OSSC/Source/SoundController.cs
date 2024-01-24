@@ -79,6 +79,14 @@ namespace OSSC
             }
         }
 
+        public void SetMuteAll(bool isMute)
+        {
+            foreach (var item in _database.items)
+            {
+                SetMute(item.name, isMute);
+            }
+        }
+
         /// <summary>
         /// Creates a SoundCue and plays it.
         /// </summary>
