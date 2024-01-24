@@ -31,8 +31,8 @@ MonoBehaviour:
       volume: 1
     audioObjectPrefab: {fileID: 0}
     usingDefaultPrefab: 1
-    categoryVolume: 1
-    foldOutSoundItems: 1
+    categoryVolume: 0.6
+    foldOutSoundItems: 0
     soundsSearchName: 
     isMute: 0
   - name: SFX
@@ -95,8 +95,8 @@ MonoBehaviour:
       volume: 1
     audioObjectPrefab: {fileID: 0}
     usingDefaultPrefab: 1
-    categoryVolume: 1
-    foldOutSoundItems: 1
+    categoryVolume: 0.6
+    foldOutSoundItems: 0
     soundsSearchName: 
     isMute: 0
   - name: BGM
@@ -131,11 +131,11 @@ MonoBehaviour:
       volume: 1
     audioObjectPrefab: {fileID: 0}
     usingDefaultPrefab: 1
-    categoryVolume: 1
+    categoryVolume: 0.7
     foldOutSoundItems: 1
     soundsSearchName: 
     isMute: 0
-  foldOutCategories: 1
+  foldOutCategories: 0
   foldOutTags: 1
   assetName: 
   soundTags:

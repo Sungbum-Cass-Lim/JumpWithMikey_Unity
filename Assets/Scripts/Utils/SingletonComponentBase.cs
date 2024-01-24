@@ -3,45 +3,42 @@ using UnityEngine;
 
 public abstract class SingletonComponentBase<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance = null;
-    private static object lockObj = new();
-    private static bool isQuitApplication = false;
+    private static T _instance = null;
+    private static object _lockObj = new();
+    private static bool _isQuitApplication = false;
 
     public static T Instance
     {
         get
         {
-            if (isQuitApplication)
+            if (_isQuitApplication)
                 return null;
-
-            lock (lockObj)
+            lock (_lockObj)
             {
-                if (null == instance)
+                if (null == _instance)
                 {
                     var componentName = typeof(T).ToString();
-
-                    GameObject findGameObject = GameObject.Find(componentName);
-                    if (null == findGameObject)
+                    var findGameObject = GameObject.Find(componentName);
+                    if (null != findGameObject)
                     {
-                        GameObject singleton = new()
-                        {
-                            name = "(SingletonComponent)" + componentName
-                        };
-                        instance = singleton.AddComponent<T>();
+                        _instance = findGameObject.GetComponent<T>();
+                        return _instance;
                     }
-                    else
-                        instance = findGameObject.GetComponent<T>();
+                    GameObject singleton = new()
+                    {
+                        name = "(SingletonComponent)" + componentName
+                    };
+                    _instance = singleton.AddComponent<T>();
+                    DontDestroyOnLoad(_instance);
                 }
-
-                //DontDestroyOnLoad(instance);
-                return instance;
+                return _instance;
             }
         }
     }
 
     private void Awake()
     {
-        isQuitApplication = false;
+        _isQuitApplication = false;
         InitializeSingleton();
     }
 
@@ -51,6 +48,6 @@ public abstract class SingletonComponentBase<T> : MonoBehaviour where T : MonoBe
 
     private void OnApplicationQuit()
     {
-        isQuitApplication = true;
+        _isQuitApplication = true;
     }
 }

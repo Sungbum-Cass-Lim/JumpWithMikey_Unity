@@ -33,7 +33,7 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     {
         soundController = FindObjectOfType<SoundController>();
     }
-    public override void ResetSingleton(){}
+    public override void ResetSingleton() { }
 
     private void Update()
     {
@@ -72,17 +72,17 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
         playSfxSoundList.Add(sfxSound);
     }
 
-    //public void PlaySFXLoop(SFXType sfxType)
-    //{
-    //    PlaySoundSettings settings = new PlaySoundSettings();
-    //    settings.Init();
+    public void PlaySFXLoop(SFXType sfxType)
+    {
+        PlaySoundSettings settings = new PlaySoundSettings();
+        settings.Init();
 
-    //    settings.name = sfxType.ToString();
-    //    settings.isLooped = true;
-    //    var sfxLoopSound = soundController.Play(settings);
+        settings.name = sfxType.ToString();
+        settings.isLooped = true;
+        var sfxLoopSound = soundController.Play(settings);
 
-    //    playSfxSoundList.Add(sfxLoopSound);
-    //}
+        playSfxSoundList.Add(sfxLoopSound);
+    }
 
     public void PlayBGM(BGMType bgmType)
     {
