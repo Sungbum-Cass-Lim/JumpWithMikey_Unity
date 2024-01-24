@@ -88,7 +88,7 @@ public class Enemy : PlatformObj
     {
         if ((player.transform.position.y > transform.position.y - 0.2f && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
         {
-            SoundMgr.Instance.PlayFx(SoundType.enemy_die);
+            SoundMgr.Instance.PlaySFX(SFXType.enemy_die);
 
             player.playerVelocityY = CharacterMgr.Instance.velocityY * 0.73f;
             player.jumpCount = 1;
@@ -120,10 +120,10 @@ public class Enemy : PlatformObj
             GameLogic.LogPush(gameLog);
         }
 
-        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
         else if (player.transform.position.y < transform.position.y && player.playerVelocityY < 0 && player.jumpCount != 0)
         {
-            SoundMgr.Instance.PlayGameOver(SoundType.gameover);
+            SoundMgr.Instance.PlaySFX(SFXType.gameover);
 
             Debug.Log("player Die");
             player.isDie = true;
@@ -146,7 +146,7 @@ public class Enemy : PlatformObj
 
         else
         {
-            SoundMgr.Instance.PlayGameOver(SoundType.gameover);
+            SoundMgr.Instance.PlaySFX(SFXType.gameover);
 
             Debug.Log("player Die");
             player.isDie = true;
@@ -166,6 +166,6 @@ public class Enemy : PlatformObj
 
             GameLogic.PlayerDie();
         }
-        #endif
+#endif
     }
 }

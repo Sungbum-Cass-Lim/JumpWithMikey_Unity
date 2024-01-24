@@ -142,7 +142,7 @@ public class FollowEnemy : PlatformObj
     protected override void PlayerTouch(PlayerController player)
     {
 #if !UNITY_EDITOR
-        SoundMgr.Instance.PlayGameOver(SoundType.gameover);
+        SoundMgr.Instance.PlaySFX(SFXType.gameover);
 
         if (player.dir.x == 0)
             player.dir.x = 1;

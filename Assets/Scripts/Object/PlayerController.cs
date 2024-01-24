@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
             #region PlayerMissingFeet
             if (rigidbody2D.position.y <= Camera.main.transform.position.y - Camera.main.orthographicSize && isDie == false)
             {
-                SoundMgr.Instance.PlayGameOver(SoundType.gameover);
+                SoundMgr.Instance.PlaySFX(SFXType.gameover);
 
                 isDie = true;
 
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpCount < CharacterMgr.Instance.jump && isDie == false)
         {
-            SoundMgr.Instance.PlayFx(SoundType.hero_jump);
+            SoundMgr.Instance.PlaySFX(SFXType.hero_jump);
 
             playerVelocityY = CharacterMgr.Instance.velocityY * 0.73f;
 

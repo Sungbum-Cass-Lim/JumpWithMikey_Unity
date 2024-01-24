@@ -36,7 +36,7 @@ public class Pla : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        SoundMgr.Instance.PlayFx(SoundType.coin);
+        SoundMgr.Instance.PlaySFX(SFXType.coin);
 
         isEat = true;
 

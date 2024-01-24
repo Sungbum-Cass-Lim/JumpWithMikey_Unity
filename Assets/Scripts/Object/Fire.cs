@@ -15,7 +15,7 @@ public class Fire : PlatformObj
     protected override void PlayerTouch(PlayerController player)
     {
 #if !UNITY_EDITOR
-        SoundMgr.Instance.PlayGameOver(SoundType.gameover);
+        SoundMgr.Instance.PlaySFX(SFXType.gameover);
 
         player.isDie = true;
         player.playerCharacter.transform.eulerAngles = Vector3.forward * -90 * Mathf.PI * player.dir.x;

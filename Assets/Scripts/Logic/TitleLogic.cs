@@ -38,7 +38,7 @@ public class TitleLogic : MonoBehaviour
             MuteData muteData = JsonUtility.FromJson<MuteData>(notify);
             Debug.Log($"Mute = {muteData.mute}");
 
-            SoundMgr.Instance.SetMute(muteData.mute);
+            SoundMgr.Instance.SetAllMute(muteData.mute);
         }
 
         else if(notify.Contains("onRestart"))

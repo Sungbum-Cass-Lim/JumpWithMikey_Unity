@@ -33,7 +33,9 @@ public class GameMgr : SingletonComponentBase<GameMgr>
 
     protected override void InitializeSingleton()
     {
-        SoundMgr.Instance.SetMute(muteBackup);
+        SoundMgr.Instance.SetAllMute(muteBackup);
+        SoundMgr.Instance.PlayBGM(BGMType.bgm_jumpmikey_intro);
+
         gameState = GameState.Title;
 
         GameLogic = FindObjectOfType<GameLogic>();
@@ -75,7 +77,7 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     public void GameStart()
     {
         gameState = GameState.Game;
-        SoundMgr.Instance.ChangeBgm(SoundType.bgm_jumpmikey_ingame);
+        SoundMgr.Instance.PlayBGM(BGMType.bgm_jumpmikey_ingame);
         player = ObjectPoolMgr.Instance.Load<PlayerController>(PoolObjectType.player, "player");
 
         GameLogic.Initialize(player);
@@ -85,9 +87,9 @@ public class GameMgr : SingletonComponentBase<GameMgr>
     {
         gameState = GameState.GameEnd;
 
-        muteBackup = SoundMgr.isMute;
+        muteBackup = SoundMgr.Instance.audioMute;
 
-        SoundMgr.Instance.SetMute(true);
+        SoundMgr.Instance.SetAllMute(true);
     }
     public void SetScore(int score)
     {

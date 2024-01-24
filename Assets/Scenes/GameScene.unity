@@ -1582,37 +1582,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1038736145}
-  - component: {fileID: 1038736144}
+  - component: {fileID: 1038736147}
+  - component: {fileID: 1038736146}
   m_Layer: 0
-  m_Name: SoundMgr
+  m_Name: SoundController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1038736144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1038736143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c723a5c9d809d7849b9191e7760821c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defultBgm: {fileID: 8300000, guid: f20ef8ac550212d448aad9404866c30a, type: 3}
-  bgmClipList:
-  - {fileID: 8300000, guid: f20ef8ac550212d448aad9404866c30a, type: 3}
-  - {fileID: 8300000, guid: 569c4f8db4b5cb04ab10a0d6783a2adc, type: 3}
-  fxClipList:
-  - {fileID: 8300000, guid: c5b7b0dcec46d854c99e7c8ed922c828, type: 3}
-  - {fileID: 8300000, guid: ff280584782082b49a1f83a8a9b17dde, type: 3}
-  - {fileID: 8300000, guid: 79e1c11bcffb3664c9e13cae2caa2925, type: 3}
-  - {fileID: 8300000, guid: d3dc37096bfc0874299fbdce414cf6c3, type: 3}
-  - {fileID: 8300000, guid: 42d69790559c7fc499ca1630b157b3f4, type: 3}
-  SoundComponent: {fileID: 7843337283987023459, guid: 27d4597fa614c3b46b8a84ff93aeccc7, type: 3}
 --- !u!4 &1038736145
 Transform:
   m_ObjectHideFlags: 0
@@ -1628,6 +1606,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1038736146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038736143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f8b26984abd74719b7102aed2448f82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultPrefab: {fileID: 1372326452742372, guid: d91a4843d0a82bb4c98640f14561ef59, type: 3}
+  _database: {fileID: 11400000, guid: 8992bf8823676ab4494c5244140bea91, type: 2}
+--- !u!114 &1038736147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038736143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752da49827f134e25aa204a9cb0de6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools: []
 --- !u!1 &1122989660
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,170 +1,133 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum SoundType
+using UnityEngine.SceneManagement;
+using OSSC;
+
+public enum BGMType
 {
     bgm_jumpmikey_intro = 0,
-    bgm_jumpmikey_ingame = 1,
-    coin = 2,
-    enemy_die = 3,
-    getcha = 4,
-    hero_jump = 5,
-    gameover = 6,
+    bgm_jumpmikey_ingame,
+}
+
+public enum SFXType
+{
+    coin = 0,
+    enemy_die,
+    getcha,
+    hero_jump,
+    gameover,
 }
 
 public class SoundMgr : SingletonComponentBase<SoundMgr>
 {
-    public static bool isMute = false;
+    public bool audioMute { private set; get; }
 
-    public AudioClip defultBgm;
-    public List<AudioClip> bgmClipList = new List<AudioClip>();
-    public List<AudioClip> fxClipList = new List<AudioClip>();
+    private SoundController soundController;
 
-    private Dictionary<string, AudioClip> bgmDictionary = new Dictionary<string, AudioClip>();
-    private Dictionary<string, AudioClip> fxDictionary = new Dictionary<string, AudioClip>();
+    private ISoundCue playBgmSound = null;
+    private List<ISoundCue> playSfxSoundList = new();
 
-    private Transform bgmContainer;
-    private Transform fxContainer;
-
-    private List<AudioSource> playSoundList = new List<AudioSource>();
-
-    public SoundObj SoundComponent;
-
-    protected override void InitializeSingleton() { }
-
+    protected override void InitializeSingleton()
+    {
+        soundController = FindObjectOfType<SoundController>();
+    }
     public override void ResetSingleton(){}
 
-    private void Awake()
+    private void Update()
     {
-        BgmInit();
-        FxInit();
-
-        PlayDefultBgm();
-    }
-
-    public void BgmInit()
-    {
-        bgmContainer = new GameObject().transform;
-        bgmContainer.name = "BgmContainer";
-        bgmContainer.SetParent(transform);
-
-        AudioSource bgm = bgmContainer.gameObject.AddComponent<AudioSource>();
-        bgm.loop = true;
-        bgm.volume = isMute == true ? 0.0f : 0.5f; ;
-
-        foreach (var bgmClip in bgmClipList)
+        if (Input.GetKeyDown(KeyCode.O))
+            SetAllMute(true);
+        if (Input.GetKeyDown(KeyCode.P))
+            SetAllMute(false);
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            bgmDictionary.Add(bgmClip.name, bgmClip);
-        }
-    }
-    public void FxInit()
-    {
-        fxContainer = new GameObject().transform;
-        fxContainer.name = "FxContainer";
-        fxContainer.SetParent(transform);
+            GameLogic.logCount = 0;
+            GameLogic.gameLogArray = new GameLog[5000];
 
-        foreach (var fxClip in fxClipList)
-        {
-            fxDictionary.Add(fxClip.name, fxClip);
+            GameMgr.Instance.ResetSingleton();
+
+            UserManager.Instance.ResetSingleton();
+            ObjectPoolMgr.Instance.ResetSingleton();
+            CharacterMgr.Instance.ResetSingleton();
+            SoundMgr.Instance.ResetSingleton();
+            NetworkMgr.Instance.ResetSingleton();
+
+            SceneManager.LoadScene("GameScene");
         }
     }
 
-    public void PlayDefultBgm()
+    public void PlaySFX(SFXType sfxType)
     {
-        AudioSource bgm = bgmContainer.GetComponent<AudioSource>();
-        playSoundList.Add(bgm);
-
-        bgm.clip = defultBgm;
-        bgm.Play();
-    }
-    public void ChangeBgm(string bgmName)
-    {
-        if (bgmDictionary.TryGetValue(bgmName, out var clip))
-        {
-            AudioSource bgm = bgmContainer.GetComponent<AudioSource>();
-
-            bgm.clip = clip;
-            bgm.Play();
-        }
-    }
-    public void ChangeBgm(SoundType bgmType)
-    {
-        string name = SoundTypeToName(bgmType);
-        ChangeBgm(name);
-    }
-
-    public void PlayFx(string fxName, bool isLoop = false)
-    {
-        SoundObj fxObj = ObjectPoolMgr.Instance.Load<SoundObj>(PoolObjectType.Effect, "SoundComponent");
-        fxObj.name = fxName;
-        fxObj.transform.SetParent(fxContainer);
-
-        playSoundList.Add(fxObj.audioSource);
-
-        if (fxDictionary.TryGetValue(fxName, out var clip))
-        {
-            fxObj.Init(clip, isLoop);
-            fxObj.Play();
-        }
-    }
-
-    public void PlayFx(SoundType fxType, bool isLoop = false)
-    {
-        PlayFx(SoundTypeToName(fxType), isLoop);
-    }
-
-    public void PlayGameOver(SoundType fxType, bool isLoop = false)
-    {
-        SoundObj fxObj = ObjectPoolMgr.Instance.Load<SoundObj>(PoolObjectType.Effect, "SoundComponent");
-        Debug.Log("GameOver");
-
-        if (fxDictionary.TryGetValue(SoundTypeToName(fxType), out var clip))
-        {
-            fxObj.Init(clip, isLoop);
-            fxObj.Play();
-        }
-    }
-
-    public void StopFx(AudioSource source)
-    {
-        if (!playSoundList.Contains(source))
+        if (audioMute)
             return;
 
-        playSoundList.Remove(source);
+        PlaySoundSettings settings = new PlaySoundSettings();
+        settings.Init();
+
+        settings.name = sfxType.ToString();
+        var sfxSound = soundController.Play(settings);
+
+        playSfxSoundList.Add(sfxSound);
     }
 
-    public void SetMute(bool show)
-    {
-        isMute = show;
+    //public void PlaySFXLoop(SFXType sfxType)
+    //{
+    //    PlaySoundSettings settings = new PlaySoundSettings();
+    //    settings.Init();
 
-        if (show)
+    //    settings.name = sfxType.ToString();
+    //    settings.isLooped = true;
+    //    var sfxLoopSound = soundController.Play(settings);
+
+    //    playSfxSoundList.Add(sfxLoopSound);
+    //}
+
+    public void PlayBGM(BGMType bgmType)
+    {
+        if (playBgmSound != null)
         {
-            foreach (var audio in playSoundList)
-            {
-                audio.volume = 0.0f;
-            }
+            Debug.Log("Bgm NotNull");
+
+            playBgmSound.Stop();
+            playBgmSound = null;
+        }
+
+        PlaySoundSettings settings = new PlaySoundSettings();
+
+        settings.Init();
+        settings.name = bgmType.ToString();
+        settings.categoryName = "BGM"; // search only in that category
+        settings.parent = transform; // Use this parent to put the AudioSource's position here.
+        settings.isLooped = true;
+
+        playBgmSound = soundController.Play(settings);
+    }
+
+    //public void  SetMute(bool isMute = true)
+    //{
+
+    //}
+
+    public void SetAllMute(bool isMute = true)
+    {
+        audioMute = isMute;
+
+        if (isMute)
+        {
+            soundController.StopAll();
         }
         else
         {
-            foreach (var audio in playSoundList)
+            if (GameMgr.Instance.gameState == GameState.Title)
             {
-                audio.volume = 0.5f;
+                PlayBGM(BGMType.bgm_jumpmikey_intro);
             }
-        }
-    }
-
-    public string SoundTypeToName(SoundType type)
-    {
-        switch (type)
-        {
-            case SoundType.bgm_jumpmikey_intro: return "bgm_jumpmikey_intro";
-            case SoundType.bgm_jumpmikey_ingame: return "bgm_jumpmikey_ingame";
-            case SoundType.coin: return "coin";
-            case SoundType.enemy_die: return "enemy_die";
-            case SoundType.getcha: return "getcha";
-            case SoundType.hero_jump: return "hero_jump";
-            case SoundType.gameover: return "gameover";
-            default: return string.Empty;
+            else if (GameMgr.Instance.gameState == GameState.Game)
+            {
+                PlayBGM(BGMType.bgm_jumpmikey_ingame);
+            }
         }
     }
 }
