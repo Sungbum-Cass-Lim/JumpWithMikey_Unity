@@ -17,6 +17,7 @@ public class FollowEnemy : PlatformObj
     public float moveX { set; get; }
     public float moveY { set; get; }
     private bool isRotate = false;
+    private Vector2 moveTo;
 
     public int maxDistance = 0;
     public int playerDistance = 0;
@@ -31,9 +32,9 @@ public class FollowEnemy : PlatformObj
     {
         if (GameMgr.Instance.gameState != GameState.Retry)
         {
-            //실제 위치 이동 부분
             Move();
 
+            //실제 위치 이동 부분
             transform.position = new Vector2(moveX, moveY);
 
             if (isJump)
@@ -47,15 +48,15 @@ public class FollowEnemy : PlatformObj
                 FollowerJump();
             }
 
-            if (curFloor + playerDistance + 1 < GameMgr.Instance.player.passFloor)
+            if (curFloor + 5 < GameMgr.Instance.player.passFloor)
             {
                 isJump = true;
                 enemyVelocityY = 0;
 
                 moveX = UnityEngine.Random.Range(-3.15f, 3.15f);
-                moveY = GameConfig.INTERVAL_Y * (GameMgr.Instance.player.passFloor - 2) + GameConfig.MIN_Y + 0.8f;
+                moveY = GameConfig.INTERVAL_Y * (GameMgr.Instance.player.passFloor - 3) + GameConfig.MIN_Y + 0.8f;
 
-                curFloor = GameMgr.Instance.player.passFloor - 2;
+                curFloor = GameMgr.Instance.player.passFloor - 3;
             }
         }
     }
@@ -102,6 +103,7 @@ public class FollowEnemy : PlatformObj
             isRotate = false;
 
         moveX += enemyVelocityX * dir.x * Time.deltaTime * 0.7f;
+
     }
 
     private void FollowerJump()
@@ -125,18 +127,17 @@ public class FollowEnemy : PlatformObj
         switch (Distance)
         {
             case 1:
-                enemyVelocityY = -21;
+                enemyVelocityY = -20;
                 break;
             case 2:
-                enemyVelocityY = -28;
-                break;
-            case 3:
-                enemyVelocityY = -34;
+                enemyVelocityY = -27;
                 break;
             default:
-                enemyVelocityY = -34;
+                enemyVelocityY = -27;
                 break;
         }
+
+        dir.x = UnityEngine.Random.Range(0, 2) == 0 ? -1 : 1;
     }
 
     protected override void PlayerTouch(PlayerController player)
@@ -172,9 +173,9 @@ public class FollowEnemy : PlatformObj
     {
         if (other.gameObject.TryGetComponent<Platform>(out var platform))
         {
-            if (moveY + 0.35f > platform.Top() && enemyVelocityY > 0)
+            if (moveY + 0.4f > platform.Top() && enemyVelocityY > 0)
             {
-                moveY = platform.Top() + 0.01f;
+                moveY = platform.Top() - 0.1f;
 
                 curFloor = platform.platformLevel;
                 moveRadius = GameMgr.Instance.GameLogic.platformDataList[curFloor];

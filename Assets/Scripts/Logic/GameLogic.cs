@@ -37,8 +37,6 @@ public class GameLogic : MonoBehaviour
         {
             MakeFollower(-3.6f);
         }
-
-        followerEnemyList[followerEnemyList.Count - 1].maxDistance = 3;
     }
 
     private void Update()
