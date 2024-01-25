@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
             if (moveY > platform.Top() && passFloor < platform.platformLevel)
                 passFloor = platform.platformLevel;
 
-            if (transform.position.y + 0.25f > platform.Top() && playerVelocityY > 0 && isDie == false)
+            if (transform.position.y + 0.5f > platform.Top() && playerVelocityY > 0 && isDie == false)
             {
                 moveY = platform.Top() + 0.01f;
 
