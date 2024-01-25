@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
         {
             SoundMgr.Instance.PlaySFX(SFXType.hero_jump);
 
-            playerVelocityY = CharacterMgr.Instance.velocityY * 0.73f;
+            playerVelocityY = CharacterMgr.Instance.velocityY * 0.74f;
 
             transform.eulerAngles = Vector3.zero;
             curRotation = -rotationForce * Time.deltaTime;
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
         }
 
         playerVelocityX = (640 / (100 * CharacterMgr.Instance.velocityX)) * dir.x;
-        moveX += playerVelocityX * Time.deltaTime * 0.6f;
+        moveX += playerVelocityX * Time.deltaTime * 0.55f;
     }
 
     private IEnumerator ChangeEffectActive()

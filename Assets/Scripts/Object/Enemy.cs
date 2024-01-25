@@ -86,7 +86,7 @@ public class Enemy : PlatformObj
 
     protected override void PlayerTouch(PlayerController player)
     {
-        if ((player.transform.position.y > transform.position.y - 0.2f && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
+        if ((player.transform.position.y > transform.position.y && player.playerVelocityY > 0 && isDie == false && player.jumpCount != 0) || (CharacterMgr.Instance.isTank == true && isDie == false))
         {
             SoundMgr.Instance.PlaySFX(SFXType.enemy_die);
 
