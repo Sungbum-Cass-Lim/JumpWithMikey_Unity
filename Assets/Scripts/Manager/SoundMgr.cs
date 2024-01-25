@@ -37,29 +37,6 @@ public class SoundMgr : SingletonComponentBase<SoundMgr>
     }
     public override void ResetSingleton() { }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-            SetAllMute(true);
-        if (Input.GetKeyDown(KeyCode.P))
-            SetAllMute(false);
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameLogic.logCount = 0;
-            GameLogic.gameLogArray = new GameLog[5000];
-
-            GameMgr.Instance.ResetSingleton();
-
-            UserManager.Instance.ResetSingleton();
-            ObjectPoolMgr.Instance.ResetSingleton();
-            CharacterMgr.Instance.ResetSingleton();
-            SoundMgr.Instance.ResetSingleton();
-            NetworkMgr.Instance.ResetSingleton();
-
-            SceneManager.LoadScene("GameScene");
-        }
-    }
-
     public void PlaySFX(SFXType sfxType)
     {
         if (audioMute)

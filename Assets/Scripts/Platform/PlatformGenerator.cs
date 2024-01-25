@@ -31,7 +31,6 @@ public class PlatformGenerator : MonoBehaviour
         if (GameMgr.Instance.platforms.TryDequeue(out var firstIdx))
         {
             currentPlatforms = firstIdx;
-            GameMgr.Instance.GameLogic.platformDataList.Add(currentPlatforms);
         }
 
         for (int i = 0; i < currentPlatforms.Length; i++)
@@ -167,9 +166,12 @@ public class PlatformGenerator : MonoBehaviour
                 }
 
                 createdPlatform.Initialize(this);
+
+                currentPlatforms[i] = platformIdx;
             }
         }
 
+        GameMgr.Instance.GameLogic.platformDataList.Add(currentPlatforms);
         stackPosY++;
     }
 }

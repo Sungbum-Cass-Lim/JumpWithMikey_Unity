@@ -47,7 +47,7 @@ public class FollowEnemy : PlatformObj
                 FollowerJump();
             }
 
-            if (curFloor + 4 < GameMgr.Instance.player.passFloor)
+            if (curFloor + playerDistance + 1 < GameMgr.Instance.player.passFloor)
             {
                 isJump = true;
                 enemyVelocityY = 0;
